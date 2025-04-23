@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Investment | Comrade Univest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --green: #2ecc71;
+            --dark-green: #27ae60;
+            --yellow: #f1c40f;
+            --white: #ffffff;
+            --black: #2c3e50;
+            --gray: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray);
+            color: var(--black);
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles same as dashboard */
+        .sidebar {
+            background-color: var(--black);
+            color: white;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        
+        /* ... (same sidebar styles as dashboard) ... */
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+        }
+        
+        .page-header h1 i {
+            margin-right: 10px;
+            color: var(--green);
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+            outline: none;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .investment-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .investment-type {
+            position: relative;
+        }
+        
+        .investment-type input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .investment-type label {
+            display: block;
+            padding: 1.5rem 1rem;
+            background: var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .investment-type input:checked + label {
+            background: var(--green);
+            color: white;
+        }
+        
+        .investment-type i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+        }
+        
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Same sidebar as dashboard -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-handshake"></i>
+            <span>Comrade Univest</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="investments.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Investments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="groups.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>My Groups</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="wallet.html" class="nav-link">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="learn.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-plus-circle"></i> New Investment</h1>
+        </div>
+        
+        <div class="form-container">
+            <form id="investment-form">
+                <div class="investment-type-selector">
+                    <div class="investment-type">
+                        <input type="radio" id="type-agriculture" name="investment-type" value="agriculture" checked>
+                        <label for="type-agriculture">
+                            <i class="fas fa-seedling"></i>
+                            Agriculture
+                        </label>
+                    </div>
+                    <div class="investment-type">
+                        <input type="radio" id="type-real-estate" name="investment-type" value="real-estate">
+                        <label for="type-real-estate">
+                            <i class="fas fa-home"></i>
+                            Real Estate
+                        </label>
+                    </div>
+                    <div class="investment-type">
+                        <input type="radio" id="type-stocks" name="investment-type" value="stocks">
+                        <label for="type-stocks">
+                            <i class="fas fa-chart-line"></i>
+                            Stocks
+                        </label>
+                    </div>
+                    <div class="investment-type">
+                        <input type="radio" id="type-other" name="investment-type" value="other">
+                        <label for="type-other">
+                            <i class="fas fa-piggy-bank"></i>
+                            Other
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="investment-name">Investment Name</label>
+                        <input type="text" id="investment-name" class="form-control" placeholder="e.g. Maize Farming Project" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="investment-amount">Amount (KES)</label>
+                        <input type="number" id="investment-amount" class="form-control" placeholder="5000" min="100" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="investment-duration">Duration (weeks)</label>
+                        <input type="number" id="investment-duration" class="form-control" placeholder="12" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expected-roi">Expected ROI (%)</label>
+                        <input type="number" id="expected-roi" class="form-control" placeholder="15" min="1" max="100" step="0.1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="investment-description">Description</label>
+                    <textarea id="investment-description" class="form-control" rows="4" placeholder="Describe the investment opportunity..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="investment-location">Location</label>
+                    <input type="text" id="investment-location" class="form-control" placeholder="e.g. Nairobi, Kenya">
+                </div>
+                
+                <div class="form-group">
+                    <label>Investment Type</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="investment-type">
+                                <input type="radio" id="type-individual" name="participation-type" value="individual" checked>
+                                <label for="type-individual" style="padding: 0.75rem 1rem;">
+                                    <i class="fas fa-user"></i> Individual
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="investment-type">
+                                <input type="radio" id="type-group" name="participation-type" value="group">
+                                <label for="type-group" style="padding: 0.75rem 1rem;">
+                                    <i class="fas fa-users"></i> Group
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="group-selector" style="display: none;">
+                    <label for="investment-group">Select Group</label>
+                    <select id="investment-group" class="form-control">
+                        <option value="">Loading groups...</option>
+                    </select>
+                </div>
+                
+                <div class="error-message" id="form-error"></div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Create Investment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const investmentForm = document.getElementById('investment-form');
+        const participationType = document.getElementsByName('participation-type');
+        const groupSelector = document.getElementById('group-selector');
+        const investmentGroup = document.getElementById('investment-group');
+        const formError = document.getElementById('form-error');
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Load user groups if logged in
+            loadUserGroups(user.uid);
+        });
+        
+        // Load user's groups
+        function loadUserGroups(userId) {
+            db.collection('groups')
+                .where('members', 'array-contains', userId)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        investmentGroup.innerHTML = '<option value="">You have no groups</option>';
+                        return;
+                    }
+                    
+                    investmentGroup.innerHTML = '<option value="">Select a group</option>';
+                    querySnapshot.forEach(doc => {
+                        const group = doc.data();
+                        investmentGroup.innerHTML += `<option value="${doc.id}">${group.name}</option>`;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading groups:", error);
+                    investmentGroup.innerHTML = '<option value="">Error loading groups</option>';
+                });
+        }
+        
+        // Handle participation type change
+        participationType.forEach(radio => {
+            radio.addEventListener('change', () => {
+                groupSelector.style.display = radio.value === 'group' ? 'block' : 'none';
+                if (radio.value === 'group') {
+                    investmentGroup.setAttribute('required', '');
+                } else {
+                    investmentGroup.removeAttribute('required');
+                }
+            });
+        });
+        
+        // Handle form submission
+        investmentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formError.style.display = 'none';
+            
+            const user = auth.currentUser;
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            const investmentData = {
+                name: document.getElementById('investment-name').value,
+                amount: parseFloat(document.getElementById('investment-amount').value),
+                duration: parseInt(document.getElementById('investment-duration').value),
+                expectedROI: parseFloat(document.getElementById('expected-roi').value),
+                description: document.getElementById('investment-description').value,
+                location: document.getElementById('investment-location').value,
+                type: document.querySelector('input[name="investment-type"]:checked').value,
+                participationType: document.querySelector('input[name="participation-type"]:checked').value,
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                userId: user.uid
+            };
+            
+            if (investmentData.participationType === 'group') {
+                investmentData.groupId = investmentGroup.value;
+                if (!investmentData.groupId) {
+                    formError.textContent = "Please select a group";
+                    formError.style.display = 'block';
+                    return;
+                }
+            }
+            
+            try {
+                // Add investment to Firestore
+                await db.collection('investments').add(investmentData);
+                
+                // Redirect to investments page
+                window.location.href = 'investments.html';
+            } catch (error) {
+                console.error("Error creating investment:", error);
+                formError.textContent = error.message;
+                formError.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
