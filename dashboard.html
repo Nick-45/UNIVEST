@@ -6,6 +6,7 @@
     <title>Dashboard | Comrade Univest</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
             --green: #2ecc71;
@@ -16,6 +17,8 @@
             --gray: #f8f9fa;
             --light-gray: #e9ecef;
             --dark-gray: #6c757d;
+            --blue: #3498db;
+            --red: #e74c3c;
         }
         
         * {
@@ -33,6 +36,7 @@
             min-height: 100vh;
         }
         
+        /* Sidebar Styles */
         .sidebar {
             background-color: var(--black);
             color: white;
@@ -40,6 +44,8 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         .logo {
@@ -49,6 +55,7 @@
             display: flex;
             align-items: center;
             color: var(--yellow);
+            text-decoration: none;
         }
         
         .logo i {
@@ -57,7 +64,8 @@
         
         .nav-menu {
             list-style: none;
-            margin-top: 2rem;
+            margin-top: 1rem;
+            flex-grow: 1;
         }
         
         .nav-item {
@@ -83,8 +91,10 @@
             margin-right: 10px;
             width: 20px;
             text-align: center;
+            font-size: 0.9rem;
         }
         
+        /* Main Content Styles */
         .main-content {
             padding: 2rem;
         }
@@ -99,34 +109,79 @@
         .user-profile {
             display: flex;
             align-items: center;
+            position: relative;
         }
         
         .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: var(--green);
+            background: linear-gradient(135deg, var(--green), var(--dark-green));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 10px;
             font-weight: 600;
-        }
-        
-        .sign-out {
-            background: none;
-            border: none;
-            color: var(--dark-gray);
             cursor: pointer;
-            font-size: 0.9rem;
-            margin-left: 1rem;
+            transition: all 0.3s ease;
         }
         
-        .sign-out:hover {
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .user-dropdown.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
             color: var(--black);
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
         
+        .dropdown-item:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .dropdown-item i {
+            margin-right: 10px;
+            color: var(--dark-gray);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--light-gray);
+            margin: 0.25rem 0;
+        }
+        
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -140,20 +195,32 @@
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border-top: 4px solid var(--green);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
         .stat-card.yellow {
             border-top-color: var(--yellow);
         }
         
-        .stat-card.dark {
-            border-top-color: var(--black);
+        .stat-card.blue {
+            border-top-color: var(--blue);
         }
         
         .stat-title {
             font-size: 0.9rem;
             color: var(--dark-gray);
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-title i {
+            margin-right: 8px;
         }
         
         .stat-value {
@@ -172,6 +239,11 @@
             color: var(--green);
         }
         
+        .stat-change.negative {
+            color: var(--red);
+        }
+        
+        /* Section Styles */
         .section-title {
             font-size: 1.3rem;
             font-weight: 600;
@@ -185,6 +257,7 @@
             color: var(--green);
         }
         
+        /* Investments Grid */
         .investments-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -196,11 +269,14 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .investment-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
         .investment-image {
@@ -208,10 +284,26 @@
             background-size: cover;
             background-position: center;
             background-color: var(--light-gray);
+            position: relative;
+        }
+        
+        .investment-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--yellow);
+            color: var(--black);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
         }
         
         .investment-details {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .investment-title {
@@ -241,15 +333,17 @@
         
         .progress-fill {
             height: 100%;
-            background-color: var(--green);
+            background: linear-gradient(90deg, var(--green), var(--dark-green));
             border-radius: 4px;
             width: 0%;
+            transition: width 1s ease;
         }
         
         .investment-stats {
             display: flex;
             justify-content: space-between;
             font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
         
         .investment-amount {
@@ -264,26 +358,42 @@
         .investment-actions {
             display: flex;
             justify-content: space-between;
-            margin-top: 1rem;
+            margin-top: auto;
         }
         
+        /* Button Styles */
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 6px;
             border: none;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             font-size: 0.9rem;
+        }
+        
+        .btn i {
+            transition: all 0.3s ease;
         }
         
         .btn-primary {
             background-color: var(--green);
             color: white;
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
         }
         
         .btn-primary:hover {
             background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+        }
+        
+        .btn-primary:hover i {
+            transform: translateX(3px);
         }
         
         .btn-outline {
@@ -297,6 +407,11 @@
             color: white;
         }
         
+        .btn-outline:hover i {
+            color: white;
+        }
+        
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -316,6 +431,7 @@
             margin-bottom: 1.5rem;
         }
         
+        /* Responsive Styles */
         @media (max-width: 768px) {
             body {
                 grid-template-columns: 1fr;
@@ -328,15 +444,26 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .user-profile {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
 <body>
     <aside class="sidebar">
-        <div class="logo">
+        <a href="dashboard.html" class="logo">
             <i class="fas fa-handshake"></i>
             <span>Comrade Univest</span>
-        </div>
+        </a>
         
         <ul class="nav-menu">
             <li class="nav-item">
@@ -380,49 +507,64 @@
     
     <main class="main-content">
         <div class="header">
-            <h1>Dashboard</h1>
+            <h1 class="animate__animated animate__fadeIn">Dashboard</h1>
             <div class="user-profile">
                 <div class="user-avatar" id="user-avatar">JD</div>
                 <span id="user-name">Loading...</span>
-                <button class="sign-out" id="sign-out">
-                    <i class="fas fa-sign-out-alt"></i> Sign Out
-                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="profile.html" class="dropdown-item">
+                        <i class="fas fa-user"></i> My Profile
+                    </a>
+                    <a href="settings.html" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="sign-out">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </a>
+                </div>
             </div>
         </div>
         
         <div class="stats-grid">
-            <div class="stat-card" id="portfolio-card">
-                <div class="stat-title">Total Portfolio Value</div>
+            <div class="stat-card animate__animated animate__fadeIn">
+                <div class="stat-title">
+                    <i class="fas fa-wallet"></i> Total Portfolio Value
+                </div>
                 <div class="stat-value" id="portfolio-value">KES 0</div>
-                <div class="stat-change" id="portfolio-change">
+                <div class="stat-change positive" id="portfolio-change">
                     <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
             </div>
             
-            <div class="stat-card yellow" id="active-investments-card">
-                <div class="stat-title">Active Investments</div>
+            <div class="stat-card yellow animate__animated animate__fadeIn animate__delay-1s">
+                <div class="stat-title">
+                    <i class="fas fa-chart-line"></i> Active Investments
+                </div>
                 <div class="stat-value" id="active-investments">0</div>
-                <div class="stat-change" id="investments-change">
+                <div class="stat-change positive" id="investments-change">
                     <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
             </div>
             
-            <div class="stat-card dark" id="groups-card">
-                <div class="stat-title">Group Investments</div>
+            <div class="stat-card blue animate__animated animate__fadeIn animate__delay-2s">
+                <div class="stat-title">
+                    <i class="fas fa-users"></i> Group Investments
+                </div>
                 <div class="stat-value" id="group-count">0</div>
-                <div class="stat-change" id="groups-change">
+                <div class="stat-change positive" id="groups-change">
                     <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
             </div>
         </div>
         
-        <div class="section-title">
+        <div class="section-title animate__animated animate__fadeIn">
             <i class="fas fa-chart-line"></i>
             <span>Active Investments</span>
         </div>
         
         <div class="investments-grid" id="investments-container">
-            <div class="empty-state">
+            <div class="empty-state animate__animated animate__fadeIn">
                 <i class="fas fa-chart-pie"></i>
                 <h3>No Active Investments</h3>
                 <p>You don't have any active investments yet. Start investing today!</p>
@@ -433,7 +575,190 @@
         </div>
     </main>
 
-    <script src="firebase.js"></script>
-    <script src="dashboard.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const userDropdown = document.getElementById('user-dropdown');
+        const signOutBtn = document.getElementById('sign-out');
+        const portfolioValue = document.getElementById('portfolio-value');
+        const portfolioChange = document.getElementById('portfolio-change');
+        const activeInvestments = document.getElementById('active-investments');
+        const investmentsChange = document.getElementById('investments-change');
+        const groupCount = document.getElementById('group-count');
+        const groupsChange = document.getElementById('groups-change');
+        const investmentsContainer = document.getElementById('investments-container');
+        
+        // Toggle user dropdown
+        userAvatar.addEventListener('click', () => {
+            userDropdown.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-profile')) {
+                userDropdown.classList.remove('active');
+            }
+        });
+        
+        // Sign out function
+        signOutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = 'auth.html';
+            }).catch(error => {
+                console.error("Sign out error:", error);
+            });
+        });
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Load user data
+            loadUserData(user.uid);
+            loadInvestments(user.uid);
+            
+            // Set user avatar and name
+            db.collection('users').doc(user.uid).get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    userName.textContent = userData.name || user.email;
+                    
+                    // Set avatar initials
+                    const initials = userData.name ? 
+                        userData.name.split(' ').map(n => n[0]).join('') : 
+                        user.email[0].toUpperCase();
+                    userAvatar.textContent = initials;
+                }
+            });
+        });
+        
+        // Load user data
+        function loadUserData(userId) {
+            // In a real app, you would fetch actual data from Firestore
+            // These are mock values for demonstration
+            
+            // Portfolio value
+            setTimeout(() => {
+                portfolioValue.textContent = 'KES 24,500';
+                portfolioChange.innerHTML = '<i class="fas fa-arrow-up"></i> 12.5% from last month';
+            }, 800);
+            
+            // Active investments
+            setTimeout(() => {
+                activeInvestments.textContent = '3';
+                investmentsChange.innerHTML = '<i class="fas fa-arrow-up"></i> 1 new this month';
+            }, 1000);
+            
+            // Group investments
+            setTimeout(() => {
+                groupCount.textContent = '2';
+                groupsChange.innerHTML = '<i class="fas fa-arrow-up"></i> 1 new group';
+            }, 1200);
+        }
+        
+        // Load investments
+        function loadInvestments(userId) {
+            // In a real app, you would fetch actual investments from Firestore
+            // This is mock data for demonstration
+            
+            setTimeout(() => {
+                const mockInvestments = [
+                    {
+                        id: '1',
+                        name: 'Solar Farm Project',
+                        type: 'group',
+                        amount: 'KES 10,000',
+                        roi: '15%',
+                        progress: 65,
+                        image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                        endDate: '2023-12-15'
+                    },
+                    {
+                        id: '2',
+                        name: 'Student Housing',
+                        type: 'individual',
+                        amount: 'KES 7,500',
+                        roi: '22%',
+                        progress: 35,
+                        image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                        endDate: '2024-03-20'
+                    },
+                    {
+                        id: '3',
+                        name: 'Agricultural Fund',
+                        type: 'group',
+                        amount: 'KES 7,000',
+                        roi: '18%',
+                        progress: 80,
+                        image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                        endDate: '2023-11-30'
+                    }
+                ];
+                
+                if (mockInvestments.length > 0) {
+                    investmentsContainer.innerHTML = '';
+                    
+                    mockInvestments.forEach(investment => {
+                        const investmentCard = document.createElement('div');
+                        investmentCard.className = 'investment-card animate__animated animate__fadeIn';
+                        investmentCard.innerHTML = `
+                            <div class="investment-image" style="background-image: url('${investment.image}')">
+                                <span class="investment-badge">${investment.type === 'group' ? 'Group' : 'Individual'}</span>
+                            </div>
+                            <div class="investment-details">
+                                <h3 class="investment-title">${investment.name}</h3>
+                                <div class="investment-meta">
+                                    <span>Ends: ${investment.endDate}</span>
+                                    <span>ROI: ${investment.roi}</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${investment.progress}%"></div>
+                                    </div>
+                                </div>
+                                <div class="investment-stats">
+                                    <span class="investment-amount">${investment.amount}</span>
+                                    <span class="investment-roi">${investment.roi} Return</span>
+                                </div>
+                                <div class="investment-actions">
+                                    <button class="btn btn-outline">
+                                        <i class="fas fa-chart-line"></i> View
+                                    </button>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Add Funds
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        investmentsContainer.appendChild(investmentCard);
+                    });
+                }
+            }, 1500);
+        }
+    </script>
 </body>
 </html>
