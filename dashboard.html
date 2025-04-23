@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Farm Investments</title>
+    <style>
+        /* Embedded CSS for performance */
+        :root {
+            --green: #2ecc71;
+            --dark-green: #27ae60;
+            --yellow: #f1c40f;
+            --red: #e74c3c;
+            --white: #ecf0f1;
+            --black: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--green), var(--dark-green));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 0;
+        }
+        
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--yellow);
+            color: var(--black);
+            padding: 15px 30px;
+            margin: 20px 0;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .how-it-works {
+            background-color: var(--green);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        footer {
+            background-color: var(--black);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .farm-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .invest-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Farm Investments</h1>
+    <div id="user-info"></div>
+    <h2>Available Farms</h2>
+    <div id="farms-list"></div>
+    <h2>My Investments</h2>
+    <div id="investments-list"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwv-QnOAv992yBuyrWNexojiq2WZH75e8",
+            authDomain: "univest-183ac.firebaseapp.com",
+            projectId: "univest-183ac",
+            storageBucket: "univest-183ac.firebasestorage.app",
+            messagingSenderId: "817796904444",
+            appId: "1:817796904444:web:4514d27605107129812e79",
+            measurementId: "G-L7TJ7JFGM3"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Check auth state
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is signed in
+                document.getElementById('user-info').innerHTML = `
+                    <p>Welcome, ${user.email}</p>
+                    <button onclick="signOut()">Sign Out</button>
+                `;
+                
+                // Load user data
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    document.getElementById('user-info').innerHTML += `
+                        <p>Campus: ${userData.campus}</p>
+                        <p>Balance: KES ${userData.balance}</p>
+                    `;
+                }
+                
+                // Load farms
+                const farmsSnapshot = await db.collection('farms').get();
+                const farmsList = document.getElementById('farms-list');
+                farmsSnapshot.forEach(doc => {
+                    const farm = doc.data();
+                    farmsList.innerHTML += `
+                        <div class="farm-card">
+                            <h3>${farm.name}</h3>
+                            <p>${farm.description}</p>
+                            <p>Minimum Investment: KES ${farm.minInvestment}</p>
+                            <p>Expected ROI: ${farm.expectedROI}% in ${farm.duration} weeks</p>
+                            <button class="invest-btn" onclick="invest('${doc.id}')">Invest Now</button>
+                        </div>
+                    `;
+                });
+                
+                // Load user investments
+                const investmentsSnapshot = await db.collection('investments')
+                    .where('userId', '==', user.uid).get();
+                const investmentsList = document.getElementById('investments-list');
+                investmentsSnapshot.forEach(doc => {
+                    const investment = doc.data();
+                    investmentsList.innerHTML += `
+                        <div class="farm-card">
+                            <h3>${investment.farmName}</h3>
+                            <p>Amount: KES ${investment.amount}</p>
+                            <p>Date: ${investment.date.toDate().toLocaleDateString()}</p>
+                            <p>Status: ${investment.status}</p>
+                        </div>
+                    `;
+                });
+                
+            } else {
+                // User is signed out
+                window.location.href = 'index.html';
+            }
+        });
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'index.html';
+            });
+        }
+
+        async function invest(farmId) {
+            const amount = prompt("Enter investment amount (KES):");
+            if (amount && !isNaN(amount)) {
+                const user = auth.currentUser;
+                const farmDoc = await db.collection('farms').doc(farmId).get();
+                const farm = farmDoc.data();
+                
+                // Add investment
+                await db.collection('investments').add({
+                    userId: user.uid,
+                    farmId: farmId,
+                    farmName: farm.name,
+                    amount: parseFloat(amount),
+                    date: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'Pending'
+                });
+                
+                // Update user balance (simplified)
+                await db.collection('users').doc(user.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(-parseFloat(amount))
+                });
+                
+                alert('Investment successful!');
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
