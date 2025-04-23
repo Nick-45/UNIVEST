@@ -74,53 +74,70 @@
             padding: 0.75rem 1.5rem;
             background: none;
             border: none;
+            border-bottom: 3px solid transparent;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: 500;
-            color: var(--dark-gray);
-            position: relative;
+            transition: all 0.3s ease;
         }
         
-        .tab-btn.active {
+        .tab-btn:hover, .tab-btn.active {
+            border-bottom-color: var(--green);
             color: var(--green);
         }
         
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--green);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .settings-card {
+        .settings-content {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 2rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
-        .settings-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+        .profile-section {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            margin-bottom: 2rem;
         }
         
-        .settings-card h3 i {
-            margin-right: 10px;
-            color: var(--green);
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            cursor: pointer;
+        }
+        
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
         }
         
         .form-group {
@@ -138,7 +155,6 @@
             padding: 0.75rem 1rem;
             border: 1px solid var(--light-gray);
             border-radius: 8px;
-            font-size: 1rem;
             font-family: 'Poppins', sans-serif;
         }
         
@@ -155,7 +171,6 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1rem;
         }
         
         .btn-primary {
@@ -179,35 +194,23 @@
         }
         
         .danger-zone {
-            border: 1px solid #e74c3c;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
+            border-top: 1px solid #f8d7da;
+            margin-top: 3rem;
+            padding-top: 2rem;
         }
         
         .danger-zone h3 {
-            color: #e74c3c;
+            color: #dc3545;
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .danger-zone h3 i {
-            margin-right: 10px;
-        }
-        
-        .danger-zone p {
-            color: var(--dark-gray);
-            margin-bottom: 1.5rem;
         }
         
         .btn-danger {
-            background-color: #e74c3c;
+            background-color: #dc3545;
             color: white;
         }
         
         .btn-danger:hover {
-            background-color: #c0392b;
+            background-color: #c82333;
         }
         
         @media (max-width: 768px) {
@@ -221,7 +224,7 @@
             
             .settings-tabs {
                 overflow-x: auto;
-                white-space: nowrap;
+                padding-bottom: 0.5rem;
             }
         }
     </style>
@@ -277,160 +280,60 @@
     <main class="main-content">
         <div class="settings-header">
             <h1><i class="fas fa-cog"></i> Account Settings</h1>
-            <p>Manage your account preferences and security settings</p>
         </div>
         
         <div class="settings-tabs">
-            <button class="tab-btn active" data-tab="profile">Profile</button>
-            <button class="tab-btn" data-tab="security">Security</button>
-            <button class="tab-btn" data-tab="notifications">Notifications</button>
-            <button class="tab-btn" data-tab="privacy">Privacy</button>
+            <button class="tab-btn active">Profile</button>
+            <button class="tab-btn">Security</button>
+            <button class="tab-btn">Notifications</button>
+            <button class="tab-btn">Preferences</button>
         </div>
         
-        <div class="tab-content active" id="profile-tab">
-            <div class="settings-card">
-                <h3><i class="fas fa-user"></i> Personal Information</h3>
-                <form id="profile-form">
-                    <div class="form-group">
-                        <label for="full-name">Full Name</label>
-                        <input type="text" id="full-name" class="form-control" placeholder="Enter your full name">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
-                    </div>
-                    <div class="form-group">
-                        <label for="university">University</label>
-                        <select id="university" class="form-control">
-                            <option value="">Select your university</option>
-                            <option value="UoN">University of Nairobi</option>
-                            <option value="KU">Kenyatta University</option>
-                            <option value="JKUAT">JKUAT</option>
-                            <option value="MOI">Moi University</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-            
-            <div class="settings-card">
-                <h3><i class="fas fa-image"></i> Profile Picture</h3>
-                <div id="profile-picture-container">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                        <div id="profile-avatar" style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 600;"></div>
-                        <div>
-                            <button class="btn btn-outline" id="upload-btn">
-                                <i class="fas fa-upload"></i> Upload New Photo
-                            </button>
-                            <input type="file" id="profile-picture" accept="image/*" style="display: none;">
-                            <p style="font-size: 0.8rem; color: var(--dark-gray); margin-top: 0.5rem;">JPG, GIF or PNG. Max size 2MB</p>
-                        </div>
+        <div class="settings-content">
+            <div class="profile-section">
+                <div class="profile-avatar" id="profile-avatar">
+                    JD
+                    <div class="avatar-edit">
+                        <i class="fas fa-pencil-alt"></i>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="security-tab">
-            <div class="settings-card">
-                <h3><i class="fas fa-lock"></i> Change Password</h3>
-                <form id="password-form">
-                    <div class="form-group">
-                        <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password" class="form-control" placeholder="Enter current password">
-                    </div>
-                    <div class="form-group">
-                        <label for="new-password">New Password</label>
-                        <input type="password" id="new-password" class="form-control" placeholder="Enter new password">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-password">Confirm New Password</label>
-                        <input type="password" id="confirm-password" class="form-control" placeholder="Confirm new password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Password</button>
-                </form>
+                <h3 class="profile-name" id="profile-name">Loading...</h3>
+                <p class="profile-email" id="profile-email">user@example.com</p>
             </div>
             
-            <div class="settings-card">
-                <h3><i class="fas fa-mobile-alt"></i> M-Pesa Settings</h3>
-                <form id="mpesa-form">
-                    <div class="form-group">
-                        <label for="mpesa-number">M-Pesa Number</label>
-                        <input type="tel" id="mpesa-number" class="form-control" placeholder="2547XXXXXXXX">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="notifications-tab">
-            <div class="settings-card">
-                <h3><i class="fas fa-bell"></i> Notification Preferences</h3>
-                <form id="notifications-form">
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="email-notifications">Email Notifications</label>
-                        <label class="switch">
-                            <input type="checkbox" id="email-notifications" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="sms-notifications">SMS Notifications</label>
-                        <label class="switch">
-                            <input type="checkbox" id="sms-notifications">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="app-notifications">App Notifications</label>
-                        <label class="switch">
-                            <input type="checkbox" id="app-notifications" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Preferences</button>
-                </form>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="privacy-tab">
-            <div class="settings-card">
-                <h3><i class="fas fa-user-shield"></i> Privacy Settings</h3>
-                <form id="privacy-form">
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="show-profile">Show Profile to Other Users</label>
-                        <label class="switch">
-                            <input type="checkbox" id="show-profile" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="show-investments">Show My Investments</label>
-                        <label class="switch">
-                            <input type="checkbox" id="show-investments">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                        <label for="show-groups">Show Groups I'm In</label>
-                        <label class="switch">
-                            <input type="checkbox" id="show-groups" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Privacy Settings</button>
-                </form>
-            </div>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="university">University</label>
+                    <select id="university" class="form-control" required>
+                        <option value="">Select your university</option>
+                        <option value="UoN">University of Nairobi</option>
+                        <option value="KU">Kenyatta University</option>
+                        <option value="JKUAT">JKUAT</option>
+                        <option value="MOI">Moi University</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
             
             <div class="danger-zone">
                 <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
-                <p>These actions are irreversible. Please proceed with caution.</p>
-                <button class="btn btn-danger" id="delete-account">
-                    <i class="fas fa-trash"></i> Delete My Account
+                <button class="btn btn-outline" id="change-password">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+                <button class="btn btn-danger" id="delete-account" style="margin-left: 1rem;">
+                    <i class="fas fa-trash-alt"></i> Delete Account
                 </button>
             </div>
         </div>
