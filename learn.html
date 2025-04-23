@@ -57,6 +57,7 @@
             display: flex;
             align-items: center;
             font-size: 1.8rem;
+            margin-bottom: 1rem;
         }
         
         .learn-header h1 i {
@@ -74,8 +75,7 @@
             padding: 0.75rem 1rem;
             border: 1px solid var(--light-gray);
             border-radius: 8px 0 0 8px;
-            font-size: 1rem;
-            outline: none;
+            font-family: 'Poppins', sans-serif;
         }
         
         .search-bar button {
@@ -85,11 +85,6 @@
             border: none;
             border-radius: 0 8px 8px 0;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .search-bar button:hover {
-            background-color: var(--dark-green);
         }
         
         .categories {
@@ -147,11 +142,12 @@
         .resource-type {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background-color: rgba(46, 204, 113, 0.1);
-            color: var(--green);
             border-radius: 20px;
             font-size: 0.8rem;
+            font-weight: 500;
             margin-bottom: 0.5rem;
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--green);
         }
         
         .resource-title {
@@ -169,7 +165,6 @@
         .resource-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             font-size: 0.8rem;
             color: var(--dark-gray);
         }
@@ -182,8 +177,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
         }
         
         .btn-primary {
@@ -222,6 +215,20 @@
             
             .sidebar {
                 display: none;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .search-bar input {
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .search-bar button {
+                border-radius: 8px;
+                padding: 0.75rem;
             }
         }
     </style>
@@ -277,22 +284,20 @@
     <main class="main-content">
         <div class="learn-header">
             <h1><i class="fas fa-graduation-cap"></i> Investment Education</h1>
-            <p>Learn how to make smart investment decisions with our educational resources</p>
+            <p>Learn about investing and grow your financial knowledge</p>
         </div>
         
         <div class="search-bar">
-            <input type="text" placeholder="Search for articles, videos, and more...">
-            <button type="submit">
-                <i class="fas fa-search"></i>
-            </button>
+            <input type="text" placeholder="Search for articles, videos, or courses...">
+            <button><i class="fas fa-search"></i></button>
         </div>
         
         <div class="categories">
             <button class="category-btn active">All</button>
             <button class="category-btn">Basics</button>
             <button class="category-btn">Agriculture</button>
-            <button class="category-btn">Real Estate</button>
             <button class="category-btn">Stocks</button>
+            <button class="category-btn">Real Estate</button>
             <button class="category-btn">Group Investing</button>
         </div>
         
