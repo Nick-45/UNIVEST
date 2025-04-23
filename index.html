@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm to Hostel | Student Agri-Investments</title>
+    <style>
+        /* Embedded CSS for performance */
+        :root {
+            --green: #2ecc71;
+            --dark-green: #27ae60;
+            --yellow: #f1c40f;
+            --red: #e74c3c;
+            --white: #ecf0f1;
+            --black: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--green), var(--dark-green));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 0;
+        }
+        
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--yellow);
+            color: var(--black);
+            padding: 15px 30px;
+            margin: 20px 0;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .how-it-works {
+            background-color: var(--green);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        footer {
+            background-color: var(--black);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Farm to Hostel</h1>
+            <p>Turn your cafeteria budget into farm profits!</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h2>Group Farming Investments for Kenyan Students</h2>
+            <p>Pool with classmates to fund local farms → supply your own hostels → eat what you own!</p>
+            <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students harvesting vegetables" class="hero-image">
+            <a href="#join" class="cta-button">Start Your Farming Squad</a>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <h3>KES 50 Minimum</h3>
+                <p>Invest what you'd spend on one chapati. Grow it into a week's meals.</p>
+            </div>
+            <div class="feature-card">
+                <h3>6-Week Cycles</h3>
+                <p>See returns faster than semester breaks. Perfect for student cashflow.</p>
+            </div>
+            <div class="feature-card">
+                <h3>M-Pesa Integrated</h3>
+                <p>Contribute and get paid via mobile money. No bank accounts needed.</p>
+            </div>
+        </section>
+        
+        <section class="how-it-works">
+            <h2>How Your Farming Squad Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>1. Form Group</h3>
+                    <p>Gather 5-20 classmates via WhatsApp</p>
+                </div>
+                <div class="step">
+                    <h3>2. Choose Crop</h3>
+                    <p>Pick from pre-vetted smallholder farms</p>
+                </div>
+                <div class="step">
+                    <h3>3. Pool Funds</h3>
+                    <p>Weekly M-Pesa auto-contributions</p>
+                </div>
+                <div class="step">
+                    <h3>4. Profit</h3>
+                    <p>Sell harvest to your own hostels!</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="join">
+            <h2>Ready to Harvest Profits?</h2>
+            <form id="signup-form" style="max-width: 500px; margin: 0 auto;">
+                <div style="margin-bottom: 1rem;">
+                    <label for="phone" style="display: block; margin-bottom: 0.5rem;">M-Pesa Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g. 254712345678" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label for="campus" style="display: block; margin-bottom: 0.5rem;">Your University</label>
+                    <select id="campus" name="campus" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <option value="">Select Campus</option>
+                        <option value="UoN">University of Nairobi</option>
+                        <option value="KU">Kenyatta University</option>
+                        <option value="JKUAT">JKUAT</option>
+                        <option value="MOI">Moi University</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="cta-button" style="border: none; cursor: pointer;">Join Now</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>Farm to Hostel &copy; 2023 | Kenyan Student Agri-Investment Platform</p>
+            <p>USSD: *483*95# | WhatsApp: +254 700 123456</p>
+        </div>
+    </footer>
+
+    <script>
+        // Embedded JavaScript for functionality
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phone').value;
+            const campus = document.getElementById('campus').value;
+            
+            if (!phone || !campus) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            // Simulate form submission
+            console.log('Submitting:', { phone, campus });
+            
+            // In production: Send to backend
+            // fetch('/api/signup', { method: 'POST', body: JSON.stringify({ phone, campus }) });
+            
+            alert('Success! We\'ll SMS your Farm Squad invite shortly.');
+            document.getElementById('signup-form').reset();
+            
+            // Scroll to confirmation
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Track button clicks
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', () => {
+                console.log('CTA clicked:', button.textContent);
+                // Analytics: gtag('event', 'click', { 'event_category': 'CTA' });
+            });
+        });
+    </script>
+</body>
+</html>
