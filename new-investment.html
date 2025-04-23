@@ -16,6 +16,8 @@
             --gray: #f8f9fa;
             --light-gray: #e9ecef;
             --dark-gray: #6c757d;
+            --red: #e74c3c;
+            --blue: #3498db;
         }
         
         * {
@@ -31,9 +33,10 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             min-height: 100vh;
+            line-height: 1.6;
         }
         
-        /* Sidebar styles same as dashboard */
+        /* Sidebar styles */
         .sidebar {
             background-color: var(--black);
             color: white;
@@ -41,12 +44,64 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        /* ... (same sidebar styles as dashboard) ... */
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--green);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
         
         .main-content {
             padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         
         .page-header {
@@ -60,6 +115,7 @@
             display: flex;
             align-items: center;
             font-size: 1.8rem;
+            color: var(--black);
         }
         
         .page-header h1 i {
@@ -82,6 +138,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
+            color: var(--black);
         }
         
         .form-control {
@@ -137,6 +194,10 @@
             color: white;
         }
         
+        .investment-type input:focus + label {
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+        
         .investment-type i {
             font-size: 2rem;
             margin-bottom: 0.5rem;
@@ -152,6 +213,13 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
         }
         
         .btn-primary {
@@ -161,17 +229,18 @@
         
         .btn-primary:hover {
             background-color: var(--dark-green);
+            transform: translateY(-2px);
         }
         
         .btn-outline {
             background: none;
-            border: 1px solid var(--green);
-            color: var(--green);
+            border: 1px solid var(--dark-gray);
+            color: var(--dark-gray);
         }
         
         .btn-outline:hover {
-            background-color: var(--green);
-            color: white;
+            background-color: var(--light-gray);
+            color: var(--black);
         }
         
         .form-actions {
@@ -182,10 +251,46 @@
         }
         
         .error-message {
-            color: #e74c3c;
+            color: var(--red);
             font-size: 0.9rem;
             margin-top: 0.5rem;
             display: none;
+        }
+        
+        .form-control.invalid {
+            border-color: var(--red);
+        }
+        
+        .form-control.invalid:focus {
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        
+        .input-hint {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-top: 0.25rem;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .investment-type-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
@@ -200,11 +305,40 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .investment-type-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 0.75rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Animation for form submission */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-container {
+            animation: fadeIn 0.3s ease-out;
         }
     </style>
 </head>
 <body>
-    <!-- Same sidebar as dashboard -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
             <i class="fas fa-handshake"></i>
@@ -219,7 +353,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="investments.html" class="nav-link">
+                <a href="investments.html" class="nav-link active">
                     <i class="fas fa-chart-line"></i>
                     <span>Investments</span>
                 </a>
@@ -249,6 +383,13 @@
                 </a>
             </li>
         </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+            </a>
+        </div>
     </aside>
     
     <main class="main-content">
@@ -258,34 +399,39 @@
         
         <div class="form-container">
             <form id="investment-form">
-                <div class="investment-type-selector">
-                    <div class="investment-type">
-                        <input type="radio" id="type-agriculture" name="investment-type" value="agriculture" checked>
-                        <label for="type-agriculture">
-                            <i class="fas fa-seedling"></i>
-                            Agriculture
-                        </label>
-                    </div>
-                    <div class="investment-type">
-                        <input type="radio" id="type-real-estate" name="investment-type" value="real-estate">
-                        <label for="type-real-estate">
-                            <i class="fas fa-home"></i>
-                            Real Estate
-                        </label>
-                    </div>
-                    <div class="investment-type">
-                        <input type="radio" id="type-stocks" name="investment-type" value="stocks">
-                        <label for="type-stocks">
-                            <i class="fas fa-chart-line"></i>
-                            Stocks
-                        </label>
-                    </div>
-                    <div class="investment-type">
-                        <input type="radio" id="type-other" name="investment-type" value="other">
-                        <label for="type-other">
-                            <i class="fas fa-piggy-bank"></i>
-                            Other
-                        </label>
+                <h2 style="margin-bottom: 1.5rem; color: var(--black);">Investment Details</h2>
+                
+                <div class="form-group">
+                    <label>Investment Category</label>
+                    <div class="investment-type-selector">
+                        <div class="investment-type">
+                            <input type="radio" id="type-agriculture" name="investment-type" value="agriculture" checked>
+                            <label for="type-agriculture">
+                                <i class="fas fa-seedling"></i>
+                                Agriculture
+                            </label>
+                        </div>
+                        <div class="investment-type">
+                            <input type="radio" id="type-real-estate" name="investment-type" value="real-estate">
+                            <label for="type-real-estate">
+                                <i class="fas fa-home"></i>
+                                Real Estate
+                            </label>
+                        </div>
+                        <div class="investment-type">
+                            <input type="radio" id="type-stocks" name="investment-type" value="stocks">
+                            <label for="type-stocks">
+                                <i class="fas fa-chart-line"></i>
+                                Stocks
+                            </label>
+                        </div>
+                        <div class="investment-type">
+                            <input type="radio" id="type-other" name="investment-type" value="other">
+                            <label for="type-other">
+                                <i class="fas fa-piggy-bank"></i>
+                                Other
+                            </label>
+                        </div>
                     </div>
                 </div>
                 
@@ -293,11 +439,13 @@
                     <div class="form-group">
                         <label for="investment-name">Investment Name</label>
                         <input type="text" id="investment-name" class="form-control" placeholder="e.g. Maize Farming Project" required>
+                        <div class="input-hint">Give your investment a descriptive name</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="investment-amount">Amount (KES)</label>
-                        <input type="number" id="investment-amount" class="form-control" placeholder="5000" min="100" required>
+                        <input type="number" id="investment-amount" class="form-control" placeholder="5000" min="100" step="100" required>
+                        <div class="input-hint">Minimum investment: KES 100</div>
                     </div>
                 </div>
                 
@@ -305,22 +453,26 @@
                     <div class="form-group">
                         <label for="investment-duration">Duration (weeks)</label>
                         <input type="number" id="investment-duration" class="form-control" placeholder="12" min="1" required>
+                        <div class="input-hint">How long until maturity?</div>
                     </div>
                     
                     <div class="form-group">
                         <label for="expected-roi">Expected ROI (%)</label>
                         <input type="number" id="expected-roi" class="form-control" placeholder="15" min="1" max="100" step="0.1" required>
+                        <div class="input-hint">Estimated return on investment</div>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="investment-description">Description</label>
-                    <textarea id="investment-description" class="form-control" rows="4" placeholder="Describe the investment opportunity..."></textarea>
+                    <textarea id="investment-description" class="form-control" rows="4" placeholder="Describe the investment opportunity, including any relevant details about the project, risks, and potential rewards..." required></textarea>
+                    <div class="input-hint">Be as detailed as possible to attract investors</div>
                 </div>
                 
                 <div class="form-group">
                     <label for="investment-location">Location</label>
-                    <input type="text" id="investment-location" class="form-control" placeholder="e.g. Nairobi, Kenya">
+                    <input type="text" id="investment-location" class="form-control" placeholder="e.g. Nairobi, Kenya" required>
+                    <div class="input-hint">Where is this investment located?</div>
                 </div>
                 
                 <div class="form-group">
@@ -350,25 +502,39 @@
                     <select id="investment-group" class="form-control">
                         <option value="">Loading groups...</option>
                     </select>
+                    <div class="input-hint">Which group is making this investment?</div>
                 </div>
                 
                 <div class="error-message" id="form-error"></div>
                 
                 <div class="form-actions">
                     <button type="button" class="btn btn-outline" onclick="window.history.back()">
-                        Cancel
+                        <i class="fas fa-arrow-left"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        Create Investment
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <i class="fas fa-plus-circle"></i> Create Investment
                     </button>
                 </div>
             </form>
         </div>
     </main>
 
-    <script src="firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
         // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         
@@ -378,6 +544,10 @@
         const groupSelector = document.getElementById('group-selector');
         const investmentGroup = document.getElementById('investment-group');
         const formError = document.getElementById('form-error');
+        const submitBtn = document.getElementById('submit-btn');
+        
+        // Form validation state
+        let isFormValid = false;
         
         // Check auth state
         auth.onAuthStateChanged(user => {
@@ -388,6 +558,9 @@
             
             // Load user groups if logged in
             loadUserGroups(user.uid);
+            
+            // Set up form validation
+            setupFormValidation();
         });
         
         // Load user's groups
@@ -397,7 +570,7 @@
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.empty) {
-                        investmentGroup.innerHTML = '<option value="">You have no groups</option>';
+                        investmentGroup.innerHTML = '<option value="">You have no investment groups</option>';
                         return;
                     }
                     
@@ -409,7 +582,7 @@
                 })
                 .catch(error => {
                     console.error("Error loading groups:", error);
-                    investmentGroup.innerHTML = '<option value="">Error loading groups</option>';
+                    investmentGroup.innerHTML = '<option value="">Error loading groups. Please try again.</option>';
                 });
         }
         
@@ -422,8 +595,41 @@
                 } else {
                     investmentGroup.removeAttribute('required');
                 }
+                validateForm();
             });
         });
+        
+        // Set up form validation
+        function setupFormValidation() {
+            const formInputs = investmentForm.querySelectorAll('input, textarea, select');
+            
+            formInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    validateForm();
+                    if (input.checkValidity()) {
+                        input.classList.remove('invalid');
+                    }
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (!input.checkValidity()) {
+                        input.classList.add('invalid');
+                    }
+                });
+            });
+        }
+        
+        // Validate the entire form
+        function validateForm() {
+            isFormValid = investmentForm.checkValidity();
+            
+            if (document.querySelector('input[name="participation-type"]:checked').value === 'group' && 
+                !investmentGroup.value) {
+                isFormValid = false;
+            }
+            
+            return isFormValid;
+        }
         
         // Handle form submission
         investmentForm.addEventListener('submit', async (e) => {
@@ -436,18 +642,33 @@
                 return;
             }
             
+            if (!validateForm()) {
+                formError.textContent = "Please fill in all required fields correctly.";
+                formError.style.display = 'block';
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                return;
+            }
+            
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner loading"></i> Creating...';
+            
             const investmentData = {
-                name: document.getElementById('investment-name').value,
+                name: document.getElementById('investment-name').value.trim(),
                 amount: parseFloat(document.getElementById('investment-amount').value),
                 duration: parseInt(document.getElementById('investment-duration').value),
                 expectedROI: parseFloat(document.getElementById('expected-roi').value),
-                description: document.getElementById('investment-description').value,
-                location: document.getElementById('investment-location').value,
+                description: document.getElementById('investment-description').value.trim(),
+                location: document.getElementById('investment-location').value.trim(),
                 type: document.querySelector('input[name="investment-type"]:checked').value,
                 participationType: document.querySelector('input[name="participation-type"]:checked').value,
                 status: 'pending',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                userId: user.uid
+                userId: user.uid,
+                userEmail: user.email
             };
             
             if (investmentData.participationType === 'group') {
@@ -455,7 +676,19 @@
                 if (!investmentData.groupId) {
                     formError.textContent = "Please select a group";
                     formError.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Create Investment';
                     return;
+                }
+                
+                // Get group name for display purposes
+                try {
+                    const groupDoc = await db.collection('groups').doc(investmentData.groupId).get();
+                    if (groupDoc.exists) {
+                        investmentData.groupName = groupDoc.data().name;
+                    }
+                } catch (error) {
+                    console.error("Error fetching group details:", error);
                 }
             }
             
@@ -463,13 +696,40 @@
                 // Add investment to Firestore
                 await db.collection('investments').add(investmentData);
                 
-                // Redirect to investments page
-                window.location.href = 'investments.html';
+                // Show success message (you could use a toast notification here)
+                formError.textContent = "Investment created successfully! Redirecting...";
+                formError.style.color = "var(--green)";
+                formError.style.display = 'block';
+                
+                // Redirect to investments page after a short delay
+                setTimeout(() => {
+                    window.location.href = 'investments.html';
+                }, 1500);
+                
             } catch (error) {
                 console.error("Error creating investment:", error);
-                formError.textContent = error.message;
+                formError.textContent = error.message || "Failed to create investment. Please try again.";
                 formError.style.display = 'block';
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Create Investment';
+                
+                // Scroll to error message
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
+        });
+        
+        // Add animation to form elements on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animation = `fadeIn 0.3s ease-out ${index * 0.05}s forwards`;
+                group.style.opacity = 0;
+            });
         });
     </script>
 </body>
