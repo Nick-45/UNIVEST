@@ -3,164 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Farm Investments</title>
+    <title>Comrade Univest | Dashboard</title>
+    
+    <!-- Stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
     <style>
-        /* Embedded CSS for performance */
         :root {
             --green: #2ecc71;
             --dark-green: #27ae60;
             --yellow: #f1c40f;
-            --red: #e74c3c;
-            --white: #ecf0f1;
+            --white: #ffffff;
             --black: #2c3e50;
+            --gray: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--white);
+            background-color: var(--gray);
             color: var(--black);
             line-height: 1.6;
         }
         
-        header {
-            background: linear-gradient(135deg, var(--green), var(--dark-green));
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--black);
             color: white;
-            padding: 2rem 0;
-            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
         
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .hero {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--yellow);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 3rem 0;
         }
         
-        .hero-image {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .logo i {
+            margin-right: 10px;
         }
         
-        .cta-button {
-            display: inline-block;
-            background-color: var(--yellow);
-            color: var(--black);
-            padding: 15px 30px;
-            margin: 20px 0;
-            border-radius: 50px;
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 1rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            color: white;
             text-decoration: none;
-            font-weight: bold;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
             transition: all 0.3s ease;
         }
         
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--yellow);
         }
         
-        .features {
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .sign-out {
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .sign-out:hover {
+            color: var(--black);
+        }
+        
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card.green {
+            border-top: 4px solid var(--green);
+        }
+        
+        .stat-card.yellow {
+            border-top: 4px solid var(--yellow);
+        }
+        
+        .stat-card.dark {
+            border-top: 4px solid var(--black);
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-change.positive {
+            color: var(--green);
+        }
+        
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+        
+        /* Investment Section */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--green);
+        }
+        
+        .investments-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 3rem 0;
+            gap: 1.5rem;
         }
         
-        .feature-card {
+        .investment-card {
             background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
         }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
+        .investment-card:hover {
+            transform: translateY(-5px);
         }
         
-        .how-it-works {
+        .investment-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .investment-details {
+            padding: 1.5rem;
+        }
+        
+        .investment-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .investment-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--green);
+            border-radius: 4px;
+        }
+        
+        .investment-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        
+        .investment-amount {
+            font-weight: 600;
+        }
+        
+        .investment-roi {
+            color: var(--green);
+            font-weight: 600;
+        }
+        
+        .investment-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
             background-color: var(--green);
             color: white;
-            padding: 3rem 0;
-            text-align: center;
         }
         
-        .steps {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            padding: 2rem 0;
+        .btn-primary:hover {
+            background-color: var(--dark-green);
         }
         
-        .step {
-            flex: 1;
-            min-width: 250px;
-            max-width: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--green);
+            color: var(--green);
         }
         
-        footer {
-            background-color: var(--black);
+        .btn-outline:hover {
+            background-color: var(--green);
             color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
         }
         
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero {
-                padding: 2rem 0;
-            }
-            
-            .features {
+            .dashboard-container {
                 grid-template-columns: 1fr;
             }
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .farm-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .invest-btn {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>My Farm Investments</h1>
-    <div id="user-info"></div>
-    <h2>Available Farms</h2>
-    <div id="farms-list"></div>
-    <h2>My Investments</h2>
-    <div id="investments-list"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar animate__animated animate__fadeInLeft">
+            <div class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>Comrade Univest</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Investments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>My Groups</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span>Wallet</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Learn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1 class="animate__animated animate__fadeInDown">Dashboard</h1>
+                <div class="user-profile">
+                    <div class="user-avatar" id="user-avatar">JD</div>
+                    <div>
+                        <div class="user-name" id="user-name">John Doe</div>
+                        <button class="sign-out" id="sign-out">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card green animate__animated animate__fadeIn animate__delay-1s">
+                    <div class="stat-title">Total Portfolio Value</div>
+                    <div class="stat-value">KES 12,450</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 12.5% from last month
+                    </div>
+                </div>
+                
+                <div class="stat-card yellow animate__animated animate__fadeIn animate__delay-2s">
+                    <div class="stat-title">Active Investments</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 2 new this month
+                    </div>
+                </div>
+                
+                <div class="stat-card dark animate__animated animate__fadeIn animate__delay-3s">
+                    <div class="stat-title">Group Investments</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-users"></i> 8 members
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Investments -->
+            <div class="section-title animate__animated animate__fadeIn">
+                <i class="fas fa-chart-line"></i>
+                <span>Active Investments</span>
+            </div>
+            
+            <div class="investments-grid">
+                <!-- Investment Card 1 -->
+                <div class="investment-card animate__animated animate__fadeIn">
+                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1594282416549-65a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="investment-details">
+                        <h3 class="investment-title">Sukuma Wiki Farm</h3>
+                        <div class="investment-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 6 weeks</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Kiambu</span>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                            <div class="investment-stats">
+                                <span class="investment-amount">KES 2,000</span>
+                                <span class="investment-roi">30% ROI</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-actions">
+                            <button class="btn btn-outline">
+                                <i class="fas fa-chart-line"></i> Track
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Investment Card 2 -->
+                <div class="investment-card animate__animated animate__fadeIn animate__delay-1s">
+                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1587486913049-53fc88980bea?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="investment-details">
+                        <h3 class="investment-title">Egg Production</h3>
+                        <div class="investment-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 12 weeks</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Nakuru</span>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 35%;"></div>
+                            </div>
+                            <div class="investment-stats">
+                                <span class="investment-amount">KES 3,500</span>
+                                <span class="investment-roi">45% ROI</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-actions">
+                            <button class="btn btn-outline">
+                                <i class="fas fa-chart-line"></i> Track
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Investment Card 3 -->
+                <div class="investment-card animate__animated animate__fadeIn animate__delay-2s">
+                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1594282486552-92ebf5f1f9e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
+                    <div class="investment-details">
+                        <h3 class="investment-title">Avocado Orchard</h3>
+                        <div class="investment-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 24 weeks</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Murang'a</span>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%;"></div>
+                            </div>
+                            <div class="investment-stats">
+                                <span class="investment-amount">KES 5,000</span>
+                                <span class="investment-roi">80% ROI</span>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-actions">
+                            <button class="btn btn-outline">
+                                <i class="fas fa-chart-line"></i> Track
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script>
         // Initialize Firebase
         const firebaseConfig = {
@@ -177,95 +542,73 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        // DOM Elements
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const signOutBtn = document.getElementById('sign-out');
+
         // Check auth state
-        auth.onAuthStateChanged(async (user) => {
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in
-                document.getElementById('user-info').innerHTML = `
-                    <p>Welcome, ${user.email}</p>
-                    <button onclick="signOut()">Sign Out</button>
-                `;
+                const displayName = user.displayName || user.email.split('@')[0];
+                const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase();
                 
-                // Load user data
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    document.getElementById('user-info').innerHTML += `
-                        <p>Campus: ${userData.campus}</p>
-                        <p>Balance: KES ${userData.balance}</p>
-                    `;
-                }
+                userAvatar.textContent = initials;
+                userName.textContent = displayName;
                 
-                // Load farms
-                const farmsSnapshot = await db.collection('farms').get();
-                const farmsList = document.getElementById('farms-list');
-                farmsSnapshot.forEach(doc => {
-                    const farm = doc.data();
-                    farmsList.innerHTML += `
-                        <div class="farm-card">
-                            <h3>${farm.name}</h3>
-                            <p>${farm.description}</p>
-                            <p>Minimum Investment: KES ${farm.minInvestment}</p>
-                            <p>Expected ROI: ${farm.expectedROI}% in ${farm.duration} weeks</p>
-                            <button class="invest-btn" onclick="invest('${doc.id}')">Invest Now</button>
-                        </div>
-                    `;
+                // Load user data from Firestore
+                db.collection('users').doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        if (userData.name) {
+                            userName.textContent = userData.name;
+                            const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                            userAvatar.textContent = initials;
+                        }
+                    }
                 });
-                
-                // Load user investments
-                const investmentsSnapshot = await db.collection('investments')
-                    .where('userId', '==', user.uid).get();
-                const investmentsList = document.getElementById('investments-list');
-                investmentsSnapshot.forEach(doc => {
-                    const investment = doc.data();
-                    investmentsList.innerHTML += `
-                        <div class="farm-card">
-                            <h3>${investment.farmName}</h3>
-                            <p>Amount: KES ${investment.amount}</p>
-                            <p>Date: ${investment.date.toDate().toLocaleDateString()}</p>
-                            <p>Status: ${investment.status}</p>
-                        </div>
-                    `;
-                });
-                
             } else {
                 // User is signed out
                 window.location.href = 'index.html';
             }
         });
 
-        function signOut() {
+        // Sign out
+        signOutBtn.addEventListener('click', () => {
             auth.signOut().then(() => {
                 window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error('Sign out error:', error);
+                alert('Error signing out: ' + error.message);
             });
-        }
+        });
 
-        async function invest(farmId) {
-            const amount = prompt("Enter investment amount (KES):");
-            if (amount && !isNaN(amount)) {
-                const user = auth.currentUser;
-                const farmDoc = await db.collection('farms').doc(farmId).get();
-                const farm = farmDoc.data();
-                
-                // Add investment
-                await db.collection('investments').add({
-                    userId: user.uid,
-                    farmId: farmId,
-                    farmName: farm.name,
-                    amount: parseFloat(amount),
-                    date: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'Pending'
-                });
-                
-                // Update user balance (simplified)
-                await db.collection('users').doc(user.uid).update({
-                    balance: firebase.firestore.FieldValue.increment(-parseFloat(amount))
-                });
-                
-                alert('Investment successful!');
-                window.location.reload();
+        // Load investments data
+        function loadInvestments() {
+            const user = auth.currentUser;
+            if (user) {
+                db.collection('investments')
+                    .where('userId', '==', user.uid)
+                    .get()
+                    .then((querySnapshot) => {
+                        // Process investments data
+                        querySnapshot.forEach((doc) => {
+                            const investment = doc.data();
+                            console.log('Investment:', investment);
+                            // Update UI with real data
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error getting investments:', error);
+                    });
             }
         }
+
+        // Initialize dashboard
+        window.addEventListener('DOMContentLoaded', () => {
+            loadInvestments();
+        });
     </script>
 </body>
 </html>
