@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comrade Univest | Dashboard</title>
-    
-    <!-- Stylesheets -->
+    <title>Dashboard | Comrade Univest</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    
     <style>
         :root {
             --green: #2ecc71;
@@ -27,36 +18,37 @@
             --dark-gray: #6c757d;
         }
         
-        body {
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--gray);
-            color: var(--black);
-            line-height: 1.6;
+            box-sizing: border-box;
         }
         
-        .dashboard-container {
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray);
+            color: var(--black);
             display: grid;
             grid-template-columns: 250px 1fr;
             min-height: 100vh;
         }
         
-        /* Sidebar Styles */
         .sidebar {
             background-color: var(--black);
             color: white;
             padding: 2rem 1rem;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin-bottom: 2rem;
-            color: var(--yellow);
             display: flex;
             align-items: center;
+            color: var(--yellow);
         }
         
         .logo i {
@@ -65,12 +57,11 @@
         
         .nav-menu {
             list-style: none;
-            padding: 0;
-            margin: 0;
+            margin-top: 2rem;
         }
         
         .nav-item {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         
         .nav-link {
@@ -94,7 +85,6 @@
             text-align: center;
         }
         
-        /* Main Content Styles */
         .main-content {
             padding: 2rem;
         }
@@ -124,23 +114,19 @@
             font-weight: 600;
         }
         
-        .user-name {
-            font-weight: 500;
-        }
-        
         .sign-out {
             background: none;
             border: none;
             color: var(--dark-gray);
             cursor: pointer;
             font-size: 0.9rem;
+            margin-left: 1rem;
         }
         
         .sign-out:hover {
             color: var(--black);
         }
         
-        /* Dashboard Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -153,18 +139,15 @@
             border-radius: 12px;
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        
-        .stat-card.green {
             border-top: 4px solid var(--green);
         }
         
         .stat-card.yellow {
-            border-top: 4px solid var(--yellow);
+            border-top-color: var(--yellow);
         }
         
         .stat-card.dark {
-            border-top: 4px solid var(--black);
+            border-top-color: var(--black);
         }
         
         .stat-title {
@@ -189,11 +172,6 @@
             color: var(--green);
         }
         
-        .stat-change.negative {
-            color: #e74c3c;
-        }
-        
-        /* Investment Section */
         .section-title {
             font-size: 1.3rem;
             font-weight: 600;
@@ -229,6 +207,7 @@
             height: 150px;
             background-size: cover;
             background-position: center;
+            background-color: var(--light-gray);
         }
         
         .investment-details {
@@ -264,6 +243,7 @@
             height: 100%;
             background-color: var(--green);
             border-radius: 4px;
+            width: 0%;
         }
         
         .investment-stats {
@@ -294,6 +274,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         .btn-primary {
@@ -316,9 +297,27 @@
             color: white;
         }
         
-        /* Responsive */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+        }
+        
         @media (max-width: 768px) {
-            .dashboard-container {
+            body {
                 grid-template-columns: 1fr;
             }
             
@@ -333,282 +332,108 @@
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar animate__animated animate__fadeInLeft">
-            <div class="logo">
-                <i class="fas fa-handshake"></i>
-                <span>Comrade Univest</span>
-            </div>
-            
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Investments</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <span>My Groups</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-wallet"></i>
-                        <span>Wallet</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Learn</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-handshake"></i>
+            <span>Comrade Univest</span>
+        </div>
         
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="header">
-                <h1 class="animate__animated animate__fadeInDown">Dashboard</h1>
-                <div class="user-profile">
-                    <div class="user-avatar" id="user-avatar">JD</div>
-                    <div>
-                        <div class="user-name" id="user-name">John Doe</div>
-                        <button class="sign-out" id="sign-out">
-                            <i class="fas fa-sign-out-alt"></i> Sign Out
-                        </button>
-                    </div>
-                </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="investments.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Investments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="groups.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>My Groups</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="wallet.html" class="nav-link">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="learn.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    
+    <main class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="user-profile">
+                <div class="user-avatar" id="user-avatar">JD</div>
+                <span id="user-name">Loading...</span>
+                <button class="sign-out" id="sign-out">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
             </div>
-            
-            <!-- Stats Cards -->
-            <div class="stats-grid">
-                <div class="stat-card green animate__animated animate__fadeIn animate__delay-1s">
-                    <div class="stat-title">Total Portfolio Value</div>
-                    <div class="stat-value">KES 12,450</div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i> 12.5% from last month
-                    </div>
-                </div>
-                
-                <div class="stat-card yellow animate__animated animate__fadeIn animate__delay-2s">
-                    <div class="stat-title">Active Investments</div>
-                    <div class="stat-value">5</div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i> 2 new this month
-                    </div>
-                </div>
-                
-                <div class="stat-card dark animate__animated animate__fadeIn animate__delay-3s">
-                    <div class="stat-title">Group Investments</div>
-                    <div class="stat-value">3</div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-users"></i> 8 members
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Active Investments -->
-            <div class="section-title animate__animated animate__fadeIn">
-                <i class="fas fa-chart-line"></i>
-                <span>Active Investments</span>
-            </div>
-            
-            <div class="investments-grid">
-                <!-- Investment Card 1 -->
-                <div class="investment-card animate__animated animate__fadeIn">
-                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1594282416549-65a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
-                    <div class="investment-details">
-                        <h3 class="investment-title">Sukuma Wiki Farm</h3>
-                        <div class="investment-meta">
-                            <span><i class="fas fa-calendar-alt"></i> 6 weeks</span>
-                            <span><i class="fas fa-map-marker-alt"></i> Kiambu</span>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%;"></div>
-                            </div>
-                            <div class="investment-stats">
-                                <span class="investment-amount">KES 2,000</span>
-                                <span class="investment-roi">30% ROI</span>
-                            </div>
-                        </div>
-                        
-                        <div class="investment-actions">
-                            <button class="btn btn-outline">
-                                <i class="fas fa-chart-line"></i> Track
-                            </button>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add Funds
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Investment Card 2 -->
-                <div class="investment-card animate__animated animate__fadeIn animate__delay-1s">
-                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1587486913049-53fc88980bea?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
-                    <div class="investment-details">
-                        <h3 class="investment-title">Egg Production</h3>
-                        <div class="investment-meta">
-                            <span><i class="fas fa-calendar-alt"></i> 12 weeks</span>
-                            <span><i class="fas fa-map-marker-alt"></i> Nakuru</span>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 35%;"></div>
-                            </div>
-                            <div class="investment-stats">
-                                <span class="investment-amount">KES 3,500</span>
-                                <span class="investment-roi">45% ROI</span>
-                            </div>
-                        </div>
-                        
-                        <div class="investment-actions">
-                            <button class="btn btn-outline">
-                                <i class="fas fa-chart-line"></i> Track
-                            </button>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add Funds
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Investment Card 3 -->
-                <div class="investment-card animate__animated animate__fadeIn animate__delay-2s">
-                    <div class="investment-image" style="background-image: url('https://images.unsplash.com/photo-1594282486552-92ebf5f1f9e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');"></div>
-                    <div class="investment-details">
-                        <h3 class="investment-title">Avocado Orchard</h3>
-                        <div class="investment-meta">
-                            <span><i class="fas fa-calendar-alt"></i> 24 weeks</span>
-                            <span><i class="fas fa-map-marker-alt"></i> Murang'a</span>
-                        </div>
-                        
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 15%;"></div>
-                            </div>
-                            <div class="investment-stats">
-                                <span class="investment-amount">KES 5,000</span>
-                                <span class="investment-roi">80% ROI</span>
-                            </div>
-                        </div>
-                        
-                        <div class="investment-actions">
-                            <button class="btn btn-outline">
-                                <i class="fas fa-chart-line"></i> Track
-                            </button>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add Funds
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAwv-QnOAv992yBuyrWNexojiq2WZH75e8",
-            authDomain: "univest-183ac.firebaseapp.com",
-            projectId: "univest-183ac",
-            storageBucket: "univest-183ac.firebasestorage.app",
-            messagingSenderId: "817796904444",
-            appId: "1:817796904444:web:4514d27605107129812e79",
-            measurementId: "G-L7TJ7JFGM3"
-        };
+        </div>
         
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        <div class="stats-grid">
+            <div class="stat-card" id="portfolio-card">
+                <div class="stat-title">Total Portfolio Value</div>
+                <div class="stat-value" id="portfolio-value">KES 0</div>
+                <div class="stat-change" id="portfolio-change">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+            </div>
+            
+            <div class="stat-card yellow" id="active-investments-card">
+                <div class="stat-title">Active Investments</div>
+                <div class="stat-value" id="active-investments">0</div>
+                <div class="stat-change" id="investments-change">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+            </div>
+            
+            <div class="stat-card dark" id="groups-card">
+                <div class="stat-title">Group Investments</div>
+                <div class="stat-value" id="group-count">0</div>
+                <div class="stat-change" id="groups-change">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-title">
+            <i class="fas fa-chart-line"></i>
+            <span>Active Investments</span>
+        </div>
+        
+        <div class="investments-grid" id="investments-container">
+            <div class="empty-state">
+                <i class="fas fa-chart-pie"></i>
+                <h3>No Active Investments</h3>
+                <p>You don't have any active investments yet. Start investing today!</p>
+                <a href="investments.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Investment
+                </a>
+            </div>
+        </div>
+    </main>
 
-        // DOM Elements
-        const userAvatar = document.getElementById('user-avatar');
-        const userName = document.getElementById('user-name');
-        const signOutBtn = document.getElementById('sign-out');
-
-        // Check auth state
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                const displayName = user.displayName || user.email.split('@')[0];
-                const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase();
-                
-                userAvatar.textContent = initials;
-                userName.textContent = displayName;
-                
-                // Load user data from Firestore
-                db.collection('users').doc(user.uid).get().then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        if (userData.name) {
-                            userName.textContent = userData.name;
-                            const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
-                            userAvatar.textContent = initials;
-                        }
-                    }
-                });
-            } else {
-                // User is signed out
-                window.location.href = 'index.html';
-            }
-        });
-
-        // Sign out
-        signOutBtn.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            }).catch((error) => {
-                console.error('Sign out error:', error);
-                alert('Error signing out: ' + error.message);
-            });
-        });
-
-        // Load investments data
-        function loadInvestments() {
-            const user = auth.currentUser;
-            if (user) {
-                db.collection('investments')
-                    .where('userId', '==', user.uid)
-                    .get()
-                    .then((querySnapshot) => {
-                        // Process investments data
-                        querySnapshot.forEach((doc) => {
-                            const investment = doc.data();
-                            console.log('Investment:', investment);
-                            // Update UI with real data
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('Error getting investments:', error);
-                    });
-            }
-        }
-
-        // Initialize dashboard
-        window.addEventListener('DOMContentLoaded', () => {
-            loadInvestments();
-        });
-    </script>
+    <script src="firebase.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
