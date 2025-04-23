@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +16,8 @@
             --gray: #f8f9fa;
             --light-gray: #e9ecef;
             --dark-gray: #6c757d;
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
         }
         
         * {
@@ -129,6 +130,10 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
         }
         
         .btn-primary {
@@ -149,6 +154,46 @@
         .btn-outline:hover {
             background-color: var(--green);
             color: white;
+        }
+        
+        .btn-google {
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            color: var(--black);
+            position: relative;
+        }
+        
+        .btn-google:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .btn-google i {
+            color: var(--google-red);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .divider::before {
+            margin-right: 1rem;
+        }
+        
+        .divider::after {
+            margin-left: 1rem;
         }
         
         .auth-footer {
@@ -235,6 +280,12 @@
                     Login
                 </button>
                 
+                <div class="divider">OR</div>
+                
+                <button type="button" class="btn btn-google" id="google-login">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                
                 <div class="auth-footer">
                     <a href="#" id="forgot-password">Forgot password?</a>
                 </div>
@@ -271,6 +322,12 @@
                     Create Account
                 </button>
                 
+                <div class="divider">OR</div>
+                
+                <button type="button" class="btn btn-google" id="google-signup">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+                
                 <div class="auth-footer">
                     Already have an account? <a href="#" id="switch-to-login">Login</a>
                 </div>
@@ -297,8 +354,30 @@
         </div>
     </div>
 
-    <script src="firebase.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
     <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Google Auth Provider
+        const provider = new firebase.auth.GoogleAuthProvider();
+        
         // DOM Elements
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
@@ -314,6 +393,8 @@
         const switchToLogin = document.getElementById('switch-to-login');
         const forgotPassword = document.getElementById('forgot-password');
         const backToLogin = document.getElementById('back-to-login');
+        const googleLoginBtn = document.getElementById('google-login');
+        const googleSignupBtn = document.getElementById('google-signup');
         
         // Check URL for signup parameter
         const urlParams = new URLSearchParams(window.location.search);
@@ -377,7 +458,7 @@
             switchTab('login');
         });
         
-        // Firebase authentication
+        // Firebase authentication - Email/Password
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -386,7 +467,7 @@
             
             errorElement.style.display = 'none';
             
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     // Redirect to dashboard
                     window.location.href = 'dashboard.html';
@@ -416,10 +497,10 @@
                 return;
             }
             
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     // Add user data to Firestore
-                    return firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+                    return db.collection('users').doc(userCredential.user.uid).set({
                         name: name,
                         email: email,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -442,6 +523,41 @@
                 });
         });
         
+        // Google Authentication
+        function handleGoogleAuth() {
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Check if user is new
+                    const isNewUser = result.additionalUserInfo.isNewUser;
+                    const user = result.user;
+                    
+                    if (isNewUser) {
+                        // Add new user to Firestore
+                        return db.collection('users').doc(user.uid).set({
+                            name: user.displayName,
+                            email: user.email,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            balance: 0,
+                            investments: []
+                        });
+                    }
+                })
+                .then(() => {
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    const errorElement = document.querySelector('.auth-form.active .error-message');
+                    errorElement.textContent = error.message;
+                    errorElement.style.display = 'block';
+                });
+        }
+        
+        // Add Google auth event listeners
+        googleLoginBtn.addEventListener('click', handleGoogleAuth);
+        googleSignupBtn.addEventListener('click', handleGoogleAuth);
+        
+        // Password Reset
         resetForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('reset-email').value;
@@ -451,7 +567,7 @@
             errorElement.style.display = 'none';
             successElement.style.display = 'none';
             
-            firebase.auth().sendPasswordResetEmail(email)
+            auth.sendPasswordResetEmail(email)
                 .then(() => {
                     successElement.textContent = "Password reset email sent. Please check your inbox.";
                     successElement.style.display = 'block';
