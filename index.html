@@ -35,6 +35,7 @@
             overflow-x: hidden;
         }
         
+        /* Header & Navigation */
         .hero-header {
             background: linear-gradient(135deg, var(--green), var(--dark-green));
             color: white;
@@ -118,45 +119,104 @@
             width: 100%;
         }
         
+        /* Enhanced Button Styles */
         .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem;
             border-radius: 50px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             text-align: center;
             cursor: pointer;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            gap: 0.6rem;
+        }
+        
+        .btn i {
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
         }
         
         .btn-outline {
             border: 2px solid white;
             color: white;
             background: transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .btn-outline:hover {
             background: white;
             color: var(--green);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-outline:hover i {
+            transform: translateX(3px);
+            color: var(--green);
         }
         
         .btn-primary {
             background: var(--yellow);
             color: var(--black);
             border: 2px solid var(--yellow);
-            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(241, 196, 15, 0.4);
         }
         
         .btn-primary:hover {
             background: transparent;
             color: var(--yellow);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(241, 196, 15, 0.3);
         }
         
+        .btn-primary:hover i {
+            transform: scale(1.1);
+            color: var(--yellow);
+        }
+        
+        /* Pulse animation for primary button */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(241, 196, 15, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+        }
+        
+        .btn-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Special button for main CTA */
+        .btn-cta {
+            background: linear-gradient(135deg, var(--yellow), #f5d313);
+            color: var(--black);
+            font-weight: 700;
+            padding: 1rem 2.2rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(241, 196, 15, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+        
+        .btn-cta:hover {
+            background: linear-gradient(135deg, #f5d313, var(--yellow));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(241, 196, 15, 0.5);
+        }
+        
+        .btn-cta i {
+            font-size: 1.3rem;
+            margin-right: 0.5rem;
+        }
+        
+        /* Hero Content */
         .hero-content {
             text-align: center;
             padding: 4rem 0;
@@ -178,6 +238,7 @@
             opacity: 0.9;
         }
         
+        /* Sections */
         section {
             padding: 5rem 0;
         }
@@ -205,6 +266,7 @@
             border-radius: 2px;
         }
         
+        /* Features Grid */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -254,6 +316,7 @@
             background-color: var(--light-gray);
         }
         
+        /* Steps Section */
         .steps {
             display: flex;
             flex-wrap: wrap;
@@ -407,8 +470,68 @@
             opacity: 0.9;
         }
         
-        .cta-section .btn {
+        /* Social Media Buttons */
+        .btn-social {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
             margin: 0 0.5rem;
+        }
+        
+        .btn-whatsapp {
+            background-color: #25D366;
+        }
+        
+        .btn-twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .btn-instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+        }
+        
+        .btn-facebook {
+            background-color: #1877F2;
+        }
+        
+        .btn-linkedin {
+            background-color: #0077B5;
+        }
+        
+        .btn-social:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Floating Action Button */
+        .fab-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .fab-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: var(--dark-green);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5);
         }
         
         /* Footer */
@@ -416,7 +539,6 @@
             background-color: var(--black);
             color: white;
             padding: 4rem 0 2rem;
-            text-align: center;
         }
         
         .footer-content {
@@ -455,27 +577,8 @@
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             margin: 2rem 0;
-        }
-        
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .social-links a:hover {
-            color: var(--green);
-            transform: translateY(-3px);
-            background: rgba(255,255,255,0.2);
         }
         
         .copyright {
@@ -483,6 +586,7 @@
             border-top: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.7);
             font-size: 0.9rem;
+            text-align: center;
         }
         
         /* Mobile Menu */
@@ -532,6 +636,7 @@
                 flex-direction: column;
                 width: 100%;
                 text-align: center;
+                gap: 1rem;
             }
             
             .nav-links.active {
@@ -614,8 +719,12 @@
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How It Works</a>
                 <a href="#testimonials">Testimonials</a>
-                <a href="auth.html" class="btn-outline">Login</a>
-                <a href="auth.html?signup=true" class="btn-primary">Sign Up</a>
+                <a href="auth.html" class="btn-outline">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="auth.html?signup=true" class="btn-primary btn-pulse">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
             </div>
         </nav>
         
@@ -623,8 +732,8 @@
             <h1 class="animate__animated animate__fadeInDown">Invest Together, Grow Together</h1>
             <p class="animate__animated animate__fadeIn animate__delay-1s">Kenya's premier student-focused investment platform that makes wealth creation accessible</p>
             <div class="animate__animated animate__fadeInUp animate__delay-2s">
-                <a href="auth.html?signup=true" class="btn-primary">
-                    <i class="fas fa-user-plus"></i> Get Started - It's Free
+                <a href="auth.html?signup=true" class="btn-cta">
+                    <i class="fas fa-rocket"></i> Get Started
                 </a>
                 <a href="#how-it-works" class="btn-outline" style="margin-left: 1rem;">
                     <i class="fas fa-play-circle"></i> How It Works
@@ -725,10 +834,10 @@
         <section class="cta-section">
             <div class="container">
                 <h2 class="animate__animated animate__fadeIn">Ready to Start Your Investment Journey?</h2>
-                <p class="animate__animated animate__fadeIn animate__delay-1s">Join thousands of Kenyan students already building their wealth through smart investing</p>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">Join thousands of comrades already building their wealth through smart investing</p>
                 <div class="animate__animated animate__fadeIn animate__delay-2s">
-                    <a href="auth.html?signup=true" class="btn-primary">
-                        <i class="fas fa-user-plus"></i> Sign Up Free
+                    <a href="auth.html?signup=true" class="btn-cta">
+                        <i class="fas fa-rocket"></i> Sign Up 
                     </a>
                     <a href="#features" class="btn-outline">
                         <i class="fas fa-info-circle"></i> Learn More
@@ -774,11 +883,21 @@
             </div>
             
             <div class="social-links">
-                <a href="https://wa.me/254114963959"><i class="fab fa-whatsapp"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="https://wa.me/254114963959" class="btn-social btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="btn-social btn-twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="btn-social btn-instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="btn-social btn-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="btn-social btn-linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
             </div>
             
             <div class="copyright">
@@ -787,6 +906,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating action button -->
+    <a href="auth.html?signup=true" class="fab-btn animate__animated animate__fadeInUp animate__delay-3s">
+        <i class="fas fa-plus"></i>
+    </a>
 
     <script>
         // Mobile menu toggle
