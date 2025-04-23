@@ -1,30 +1,20 @@
-import { auth, db } from './firebase.js';
+import { db } from './firebase.js';
 
 // DOM Elements
 const resourcesContainer = document.getElementById('resources-container');
+const categoryBtns = document.querySelectorAll('.category-btn');
 const searchInput = document.querySelector('.search-bar input');
 const searchBtn = document.querySelector('.search-bar button');
-const categoryBtns = document.querySelectorAll('.category-btn');
 
 // Current filter state
 let currentCategory = 'all';
 let currentSearch = '';
 
-// Check auth state
-auth.onAuthStateChanged(user => {
-    if (!user) {
-        window.location.href = 'auth.html';
-        return;
-    }
-
-    // Load resources
-    loadResources();
-});
-
 // Load resources from Firestore
 function loadResources() {
     let query = db.collection('resources')
-        .orderBy('createdAt', 'desc');
+        .orderBy('createdAt', 'desc')
+        .limit(12);
 
     // Apply category filter if not 'all'
     if (currentCategory !== 'all') {
@@ -43,7 +33,7 @@ function loadResources() {
                     <div class="empty-state">
                         <i class="fas fa-book-open"></i>
                         <h3>No Resources Found</h3>
-                        <p>Try a different search or category</p>
+                        <p>We couldn't find any resources matching your criteria</p>
                     </div>
                 `;
                 return;
@@ -62,12 +52,15 @@ function loadResources() {
                             <span class="resource-type">${resource.type || 'Article'}</span>
                             <h3 class="resource-title">${resource.title}</h3>
                             <p class="resource-description">${resource.description || 'No description available'}</p>
+                            
                             <div class="resource-meta">
-                                <span>${duration} • ${resource.level || 'Beginner'}</span>
-                                <button class="btn btn-primary" onclick="viewResource('${doc.id}')">
-                                    <i class="fas fa-${getResourceActionIcon(resource.type)}"></i> ${getResourceActionText(resource.type)}
-                                </button>
+                                <span><i class="fas fa-clock"></i> ${duration}</span>
+                                <span><i class="fas fa-calendar-alt"></i> ${resource.createdAt?.toDate().toLocaleDateString() || ''}</span>
                             </div>
+                            
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="viewResource('${doc.id}')">
+                                <i class="fas fa-${getResourceIcon(resource.type)}"></i> View ${resource.type || 'Resource'}
+                            </button>
                         </div>
                     </div>
                 `;
@@ -80,47 +73,26 @@ function loadResources() {
                     <i class="fas fa-exclamation-triangle"></i>
                     <h3>Error Loading Resources</h3>
                     <p>${error.message}</p>
+                    <button class="btn-primary" onclick="window.location.reload()">
+                        <i class="fas fa-sync-alt"></i> Try Again
+                    </button>
                 </div>
             `;
         });
 }
 
-// Get appropriate action text for resource type
-function getResourceActionText(type) {
-    switch(type) {
-        case 'video': return 'Watch';
-        case 'article': return 'Read';
-        case 'course': return 'Start';
-        case 'podcast': return 'Listen';
-        default: return 'View';
+// Get appropriate icon for resource type
+function getResourceIcon(type) {
+    switch((type || '').toLowerCase()) {
+        case 'video': return 'fa-play';
+        case 'article': return 'fa-newspaper';
+        case 'course': return 'fa-graduation-cap';
+        case 'podcast': return 'fa-podcast';
+        default: return 'fa-book-open';
     }
 }
 
-// Get appropriate action icon for resource type
-function getResourceActionIcon(type) {
-    switch(type) {
-        case 'video': return 'play';
-        case 'article': return 'book-open';
-        case 'course': return 'graduation-cap';
-        case 'podcast': return 'headphones';
-        default: return 'arrow-right';
-    }
-}
-
-// Search functionality
-searchBtn.addEventListener('click', () => {
-    currentSearch = searchInput.value.trim();
-    loadResources();
-});
-
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        currentSearch = searchInput.value.trim();
-        loadResources();
-    }
-});
-
-// Category filter buttons
+// Category button click handler
 categoryBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         categoryBtns.forEach(b => b.classList.remove('active'));
@@ -130,7 +102,24 @@ categoryBtns.forEach(btn => {
     });
 });
 
-// Global function for viewing resources
+// Search button click handler
+searchBtn.addEventListener('click', () => {
+    currentSearch = searchInput.value.trim();
+    loadResources();
+});
+
+// Search on Enter key
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        currentSearch = searchInput.value.trim();
+        loadResources();
+    }
+});
+
+// Global function to view resource
 window.viewResource = function(resourceId) {
     window.location.href = `resource.html?id=${resourceId}`;
 };
+
+// Initial load
+loadResources();
