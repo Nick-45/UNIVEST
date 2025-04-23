@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Details | Comrade Univest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --green: #2ecc71;
+            --dark-green: #27ae60;
+            --yellow: #f1c40f;
+            --white: #ffffff;
+            --black: #2c3e50;
+            --gray: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray);
+            color: var(--black);
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles same as dashboard */
+        .sidebar {
+            background-color: var(--black);
+            color: white;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        
+        /* ... (same sidebar styles as dashboard) ... */
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--dark-gray);
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .back-link i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--green);
+        }
+        
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+        
+        .investment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        
+        .investment-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .investment-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--light-gray);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .investment-type.group {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--green);
+        }
+        
+        .investment-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+        
+        .status-active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--green);
+        }
+        
+        .status-completed {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--dark-gray);
+        }
+        
+        .investment-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            background-color: var(--light-gray);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 2rem;
+        }
+        
+        .investment-details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .investment-info {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--green);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .detail-label {
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            text-align: right;
+        }
+        
+        .investment-description {
+            margin-top: 2rem;
+            line-height: 1.7;
+        }
+        
+        .investment-actions {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .investment-stats {
+            margin-bottom: 2rem;
+        }
+        
+        .stat-large {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--green);
+        }
+        
+        .stat-label {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--green);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+        }
+        
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .loading-state i {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .error-state i {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .investment-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .investment-actions {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Same sidebar as dashboard -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-handshake"></i>
+            <span>Comrade Univest</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="investments.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Investments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="groups.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>My Groups</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="wallet.html" class="nav-link">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="learn.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    
+    <main class="main-content">
+        <a href="investments.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Investments
+        </a>
+        
+        <div id="investment-container">
+            <div class="loading-state">
+                <i class="fas fa-spinner"></i>
+                <h3>Loading Investment Details</h3>
+                <p>Please wait while we load your investment information</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Get investment ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const investmentId = urlParams.get('id');
+        
+        // DOM Elements
+        const investmentContainer = document.getElementById('investment-container');
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            if (investmentId) {
+                loadInvestmentDetails(user.uid, investmentId);
+            } else {
+                showError("No investment ID specified");
+            }
+        });
+        
+        // Load investment details
+        function loadInvestmentDetails(userId, investmentId) {
+            db.collection('investments').doc(investmentId).get()
+                .then(doc => {
+                    if (!doc.exists) {
+                        throw new Error("Investment not found");
+                    }
+                    
+                    const investment = doc.data();
+                    
+                    // Verify the user owns this investment
+                    if (investment.userId !== userId) {
+                        throw new Error("You don't have permission to view this investment");
+                    }
+                    
+                    // Render investment details
+                    renderInvestmentDetails(investment, doc.id);
+                })
+                .catch(error => {
+                    showError(error.message);
+                });
+        }
+        
+        // Render investment details
+        function renderInvestmentDetails(investment, investmentId) {
+            const startDate = investment.startDate?.toDate();
+            const endDate = investment.endDate?.toDate();
+            const currentDate = new Date();
+            const progress = calculateProgress(startDate, endDate, currentDate);
+            
+            investmentContainer.innerHTML = `
+                <div class="investment-header">
+                    <div>
+                        <h1 class="investment-title">${investment.name}</h1>
+                        <span class="investment-type ${investment.type === 'group' ? 'group' : ''}">
+                            ${investment.type === 'group' ? 'Group Investment' : 'Individual Investment'}
+                        </span>
+                        <span class="investment-status ${investment.status === 'active' ? 'status-active' : 'status-completed'}">
+                            ${investment.status === 'active' ? 'Active' : 'Completed'}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="investment-image" style="background-image: url('${investment.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'}')"></div>
+                
+                <div class="investment-details-grid">
+                    <div class="investment-info">
+                        <h2 class="section-title"><i class="fas fa-info-circle"></i> Investment Details</h2>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Investment Amount</span>
+                            <span class="detail-value">KES ${investment.amount?.toLocaleString() || '0'}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Expected ROI</span>
+                            <span class="detail-value">${investment.expectedROI || '0'}%</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Duration</span>
+                            <span class="detail-value">${investment.duration || '0'} weeks</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Start Date</span>
+                            <span class="detail-value">${startDate ? startDate.toLocaleDateString() : 'N/A'}</span>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">${investment.status === 'active' ? 'Expected End Date' : 'End Date'}</span>
+                            <span class="detail-value">${endDate ? endDate.toLocaleDateString() : 'N/A'}</span>
+                        </div>
+                        
+                        ${investment.location ? `
+                        <div class="detail-row">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">${investment.location}</span>
+                        </div>
+                        ` : ''}
+                        
+                        ${investment.manager ? `
+                        <div class="detail-row">
+                            <span class="detail-label">${investment.type === 'group' ? 'Group Manager' : 'Investment Manager'}</span>
+                            <span class="detail-value">${investment.manager}</span>
+                        </div>
+                        ` : ''}
+                        
+                        ${investment.description ? `
+                        <div class="investment-description">
+                            <h2 class="section-title"><i class="fas fa-align-left"></i> Description</h2>
+                            <p>${investment.description}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="investment-actions">
+                        <div class="investment-stats">
+                            <div class="stat-large">KES ${calculateCurrentValue(investment).toLocaleString()}</div>
+                            <div class="stat-label">Current Value</div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>${progress}% Complete</span>
+                                <span>${investment.status === 'active' ? 
+                                    `${weeksRemaining(endDate, currentDate)} weeks remaining` : 
+                                    'Completed'}</span>
+                            </div>
+                        </div>
+                        
+                        ${investment.status === 'active' ? `
+                        <button class="btn btn-primary" onclick="addFunds('${investmentId}')">
+                            <i class="fas fa-plus"></i> Add Funds
+                        </button>
+                        ` : ''}
+                        
+                        <button class="btn btn-outline" onclick="viewInvestmentDocs('${investmentId}')">
+                            <i class="fas fa-file-alt"></i> View Documents
+                        </button>
+                        
+                        ${investment.status === 'active' ? `
+                        <button class="btn btn-outline" onclick="exitInvestment('${investmentId}')">
+                            <i class="fas fa-sign-out-alt"></i> Exit Investment
+                        </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Animate progress bar
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = `${progress}%`;
+                }
+            }, 100);
+        }
+        
+        // Calculate current value based on ROI and progress
+        function calculateCurrentValue(investment) {
+            if (!investment.amount || !investment.expectedROI) return 0;
+            
+            const amount = investment.amount;
+            const roi = investment.expectedROI / 100;
+            const startDate = investment.startDate?.toDate();
+            const endDate = investment.endDate?.toDate();
+            const currentDate = new Date();
+            
+            if (!startDate || !endDate) return amount;
+            
+            if (investment.status === 'completed') {
+                return amount + (amount * roi);
+            }
+            
+            const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+            const daysPassed = (currentDate - startDate) / (1000 * 60 * 60 * 24);
+            const progress = Math.min(1, Math.max(0, daysPassed / totalDays));
+            
+            // Simple linear growth calculation
+            // In a real app, you might use a more sophisticated formula
+            return amount + (amount * roi * progress);
+        }
+        
+        // Calculate progress percentage
+        function calculateProgress(startDate, endDate, currentDate) {
+            if (!startDate || !endDate) return 0;
+            
+            const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+            const daysPassed = (currentDate - startDate) / (1000 * 60 * 60 * 24);
+            
+            return Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+        }
+        
+        // Calculate weeks remaining
+        function weeksRemaining(endDate, currentDate) {
+            if (!endDate) return 0;
+            const msPerWeek = 1000 * 60 * 60 * 24 * 7;
+            return Math.ceil((endDate - currentDate) / msPerWeek);
+        }
+        
+        // Show error state
+        function showError(message) {
+            investmentContainer.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Loading Investment</h3>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" onclick="window.location.href='investments.html'">
+                        <i class="fas fa-arrow-left"></i> Back to Investments
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Global functions for buttons
+        window.addFunds = function(investmentId) {
+            // In a real app, this would open a modal or new page
+            alert(`Functionality to add funds to investment ${investmentId} would go here`);
+        };
+        
+        window.viewInvestmentDocs = function(investmentId) {
+            // In a real app, this would open a modal or new page
+            alert(`Functionality to view documents for investment ${investmentId} would go here`);
+        };
+        
+        window.exitInvestment = function(investmentId) {
+            // In a real app, this would open a confirmation modal
+            if (confirm("Are you sure you want to exit this investment? You may incur penalties.")) {
+                alert(`Functionality to exit investment ${investmentId} would go here`);
+            }
+        };
+    </script>
+</body>
+</html>
