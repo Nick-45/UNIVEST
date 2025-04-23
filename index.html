@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm to Hostel | Student Agri-Investments</title>
+    <title>Comrade_Univest | Student Agri-Investments</title>
+    
+    <!-- Your Requested Stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
     <style>
-        /* Embedded CSS for performance */
         :root {
             --green: #2ecc71;
             --dark-green: #27ae60;
             --yellow: #f1c40f;
-            --red: #e74c3c;
-            --white: #ecf0f1;
+            --white: #ffffff;
             --black: #2c3e50;
+            --gray: #f8f9fa;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--white);
+            background-color: var(--gray);
             color: var(--black);
             line-height: 1.6;
         }
@@ -27,8 +37,9 @@
         header {
             background: linear-gradient(135deg, var(--green), var(--dark-green));
             color: white;
-            padding: 2rem 0;
+            padding: 4rem 0 6rem;
             text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
         
         .container {
@@ -41,56 +52,88 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 3rem 0;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-weight: 600;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
         
         .hero-image {
             width: 100%;
             max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            margin: 2rem 0;
+            border: 5px solid white;
         }
         
         .cta-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             background-color: var(--yellow);
             color: var(--black);
             padding: 15px 30px;
             margin: 20px 0;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button i {
+            margin-right: 10px;
+            font-size: 1.2rem;
         }
         
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 3rem 0;
+            padding: 4rem 0;
         }
         
         .feature-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
         }
         
         .feature-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--green);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
         
         .how-it-works {
             background-color: var(--green);
             color: white;
-            padding: 3rem 0;
+            padding: 5rem 0;
             text-align: center;
         }
         
@@ -106,149 +149,402 @@
             flex: 1;
             min-width: 250px;
             max-width: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: var(--green);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
         footer {
             background-color: var(--black);
             color: white;
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
             margin-top: 3rem;
         }
         
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--green);
+            transform: translateY(-3px);
+        }
+        
+        /* Form Styles */
+        #join {
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+            outline: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--green);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Animations */
+        .animate-delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .animate-delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero {
-                padding: 2rem 0;
+            header {
+                padding: 3rem 0 5rem;
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
             }
             
-            .features {
-                grid-template-columns: 1fr;
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <header>
+    <header class="animate__animated animate__fadeIn">
         <div class="container">
-            <h1>Farm to Hostel</h1>
-            <p>Turn your cafeteria budget into farm profits!</p>
+            <h1 class="animate__animated animate__fadeInDown">Comrade_Univest</h1>
+            <p class="animate__animated animate__fadeInDown animate__delay-1s">Turn your cafeteria budget into farm profits!</p>
         </div>
     </header>
     
     <main class="container">
         <section class="hero">
-            <h2>Group Farming Investments for Kenyan Students</h2>
-            <p>Pool with classmates to fund local farms → supply your own hostels → eat what you own!</p>
-            <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students harvesting vegetables" class="hero-image">
-            <a href="#join" class="cta-button">Start Your Farming Squad</a>
+            <h2 class="animate__animated animate__fadeIn animate__delay-1s">Group Farming Investments for Kenyan Students</h2>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">Pool with classmates to fund local farms → supply your own hostels → eat what you own!</p>
+            <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students harvesting vegetables" class="hero-image animate__animated animate__fadeIn animate__delay-2s">
+            <a href="#join" class="cta-button animate__animated animate__fadeInUp animate__delay-2s">
+                <i class="fas fa-seedling"></i> Start Your Farming Squad
+            </a>
         </section>
         
         <section class="features">
-            <div class="feature-card">
+            <div class="feature-card animate__animated animate__fadeIn animate__delay-1s">
+                <i class="fas fa-coins"></i>
                 <h3>KES 50 Minimum</h3>
                 <p>Invest what you'd spend on one chapati. Grow it into a week's meals.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate__animated animate__fadeIn animate__delay-2s">
+                <i class="fas fa-calendar-week"></i>
                 <h3>6-Week Cycles</h3>
                 <p>See returns faster than semester breaks. Perfect for student cashflow.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate__animated animate__fadeIn animate__delay-3s">
+                <i class="fas fa-mobile-alt"></i>
                 <h3>M-Pesa Integrated</h3>
                 <p>Contribute and get paid via mobile money. No bank accounts needed.</p>
             </div>
         </section>
         
         <section class="how-it-works">
-            <h2>How Your Farming Squad Works</h2>
+            <h2 class="animate__animated animate__fadeIn">How Your Farming Squad Works</h2>
             <div class="steps">
-                <div class="step">
-                    <h3>1. Form Group</h3>
+                <div class="step animate__animated animate__fadeInLeft">
+                    <div class="step-number">1</div>
+                    <h3>Form Group</h3>
                     <p>Gather 5-20 classmates via WhatsApp</p>
                 </div>
-                <div class="step">
-                    <h3>2. Choose Crop</h3>
+                <div class="step animate__animated animate__fadeInLeft animate__delay-1s">
+                    <div class="step-number">2</div>
+                    <h3>Choose Crop</h3>
                     <p>Pick from pre-vetted smallholder farms</p>
                 </div>
-                <div class="step">
-                    <h3>3. Pool Funds</h3>
+                <div class="step animate__animated animate__fadeInLeft animate__delay-2s">
+                    <div class="step-number">3</div>
+                    <h3>Pool Funds</h3>
                     <p>Weekly M-Pesa auto-contributions</p>
                 </div>
-                <div class="step">
-                    <h3>4. Profit</h3>
+                <div class="step animate__animated animate__fadeInLeft animate__delay-3s">
+                    <div class="step-number">4</div>
+                    <h3>Profit</h3>
                     <p>Sell harvest to your own hostels!</p>
                 </div>
             </div>
         </section>
         
         <section id="join">
-            <h2>Ready to Harvest Profits?</h2>
-            <form id="signup-form" style="max-width: 500px; margin: 0 auto;">
-                <div style="margin-bottom: 1rem;">
-                    <label for="phone" style="display: block; margin-bottom: 0.5rem;">M-Pesa Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="e.g. 254712345678" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                </div>
-                <div style="margin-bottom: 1rem;">
-                    <label for="campus" style="display: block; margin-bottom: 0.5rem;">Your University</label>
-                    <select id="campus" name="campus" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                        <option value="">Select Campus</option>
-                        <option value="UoN">University of Nairobi</option>
-                        <option value="KU">Kenyatta University</option>
-                        <option value="JKUAT">JKUAT</option>
-                        <option value="MOI">Moi University</option>
-                        <option value="OTHER">Other</option>
-                    </select>
-                </div>
-                <button type="submit" class="cta-button" style="border: none; cursor: pointer;">Join Now</button>
-            </form>
+            <h2 class="animate__animated animate__fadeIn">Ready to Harvest Profits?</h2>
+            <div class="form-container animate__animated animate__fadeInUp">
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Wanjiku Mwangi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">M-Pesa Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 254712345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="campus">Your University</label>
+                        <select id="campus" name="campus" class="form-control" required>
+                            <option value="">Select Campus</option>
+                            <option value="UoN">University of Nairobi</option>
+                            <option value="KU">Kenyatta University</option>
+                            <option value="JKUAT">JKUAT</option>
+                            <option value="MOI">Moi University</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email (optional)</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com">
+                    </div>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Creating your account...</p>
+                    </div>
+                    <button type="submit" class="cta-button">
+                        <i class="fas fa-user-plus"></i> Join Now
+                    </button>
+                </form>
+            </div>
         </section>
     </main>
     
-    <footer>
+    <footer class="animate__animated animate__fadeInUp">
         <div class="container">
-            <p>Farm to Hostel &copy; 2023 | Kenyan Student Agri-Investment Platform</p>
-            <p>USSD: *483*95# | WhatsApp: +254 700 123456</p>
+            <p>Developed by Nickson James</p>
+            <p>comrade_Univest &copy; 2025 | University Student Agri-Investment Platform</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+
         </div>
     </footer>
 
     <script>
-        // Embedded JavaScript for functionality
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwv-QnOAv992yBuyrWNexojiq2WZH75e8",
+            authDomain: "univest-183ac.firebaseapp.com",
+            projectId: "univest-183ac",
+            storageBucket: "univest-183ac.firebasestorage.app",
+            messagingSenderId: "817796904444",
+            appId: "1:817796904444:web:4514d27605107129812e79",
+            measurementId: "G-L7TJ7JFGM3"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Handle form submission
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Get form values
+            const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const campus = document.getElementById('campus').value;
+            const email = document.getElementById('email').value || `${phone}@farmtohostel.com`;
+            const password = generatePassword();
             
-            if (!phone || !campus) {
-                alert('Please fill all fields');
+            // Validate phone number
+            if (!phone.match(/^254[17]\d{8}$/)) {
+                alert('Please enter a valid Kenyan phone number starting with 254');
                 return;
             }
             
-            // Simulate form submission
-            console.log('Submitting:', { phone, campus });
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.querySelector('#signup-form button[type="submit"]').disabled = true;
             
-            // In production: Send to backend
-            // fetch('/api/signup', { method: 'POST', body: JSON.stringify({ phone, campus }) });
-            
-            alert('Success! We\'ll SMS your Farm Squad invite shortly.');
-            document.getElementById('signup-form').reset();
-            
-            // Scroll to confirmation
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            try {
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Store additional user data in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    name,
+                    phone,
+                    campus,
+                    email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    balance: 0,
+                    investments: [],
+                    userType: 'student'
+                });
+                
+                // Add sample farms if collection is empty
+                const farmsSnapshot = await db.collection('farms').get();
+                if (farmsSnapshot.empty) {
+                    await addSampleFarms();
+                }
+                
+                // Hide loading state
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('#signup-form button[type="submit"]').disabled = false;
+                
+                // Show success message
+                alert(`Registration successful! Your temporary password is: ${password}\n\nPlease change it after login.`);
+                document.getElementById('signup-form').reset();
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('#signup-form button[type="submit"]').disabled = false;
+                console.error('Error:', error);
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('This phone number is already registered. Please sign in.');
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Registration failed: ' + error.message);
+                }
+            }
         });
-        
-        // Track button clicks
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', () => {
-                console.log('CTA clicked:', button.textContent);
-                // Analytics: gtag('event', 'click', { 'event_category': 'CTA' });
-            });
+
+        // Generate random password
+        function generatePassword() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+            let password = '';
+            for (let i = 0; i < 8; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Add sample farms to Firestore
+        async function addSampleFarms() {
+            const farms = [
+                {
+                    name: "Sukuma Wiki Farm",
+                    description: "High-yield kale production in Kiambu",
+                    minInvestment: 500,
+                    expectedROI: 30,
+                    duration: 6,
+                    image: "https://images.unsplash.com/photo-1594282416549-65a51c5269a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "Egg Production",
+                    description: "Free-range chicken eggs in Nakuru",
+                    minInvestment: 1000,
+                    expectedROI: 45,
+                    duration: 12,
+                    image: "https://images.unsplash.com/photo-1587486913049-53fc88980bea?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "Avocado Orchard",
+                    description: "Hass avocado trees in Murang'a",
+                    minInvestment: 2000,
+                    expectedROI: 80,
+                    duration: 24,
+                    image: "https://images.unsplash.com/photo-1594282486552-92ebf5f1f9e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+                }
+            ];
+            
+            for (const farm of farms) {
+                await db.collection('farms').add(farm);
+            }
+        }
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
         });
     </script>
 </body>
