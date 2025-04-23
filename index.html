@@ -3,18 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comrade_Univest | Student Agri-Investments</title>
-    
-    <!-- Your Requested Stylesheets -->
+    <title>Comrade Univest | Student Investment Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    
     <style>
         :root {
             --green: #2ecc71;
@@ -23,22 +15,27 @@
             --white: #ffffff;
             --black: #2c3e50;
             --gray: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
             font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--gray);
-            color: var(--black);
             line-height: 1.6;
+            color: var(--black);
+            background-color: var(--gray);
         }
         
-        header {
+        .hero-header {
             background: linear-gradient(135deg, var(--green), var(--dark-green));
             color: white;
-            padding: 4rem 0 6rem;
-            text-align: center;
+            padding: 2rem 0 6rem;
             clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
         
@@ -48,61 +45,109 @@
             margin: 0 auto;
         }
         
-        .hero {
+        .navbar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 2rem 0;
-            text-align: center;
+            padding: 1rem 0;
         }
         
-        .hero h2 {
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
             font-weight: 600;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero-image {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            margin: 2rem 0;
-            border: 5px solid white;
-        }
-        
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--yellow);
-            color: var(--black);
-            padding: 15px 30px;
-            margin: 20px 0;
-            border-radius: 50px;
+            color: white;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .cta-button i {
+        .logo i {
             margin-right: 10px;
-            font-size: 1.2rem;
+            color: var(--yellow);
         }
         
-        .features {
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--yellow);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--green);
+        }
+        
+        .btn-primary {
+            background: var(--yellow);
+            color: var(--black);
+            border: 2px solid var(--yellow);
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--yellow);
+        }
+        
+        .hero-content {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        section {
+            padding: 4rem 0;
+        }
+        
+        section h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            color: var(--black);
+        }
+        
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 4rem 0;
         }
         
         .feature-card {
@@ -111,7 +156,6 @@
             padding: 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            text-align: center;
         }
         
         .feature-card:hover {
@@ -126,15 +170,12 @@
         }
         
         .feature-card h3 {
-            font-weight: 600;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
         }
         
-        .how-it-works {
-            background-color: var(--green);
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
+        .bg-light {
+            background-color: var(--light-gray);
         }
         
         .steps {
@@ -142,44 +183,39 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 2rem;
-            padding: 2rem 0;
         }
         
         .step {
             flex: 1;
             min-width: 250px;
             max-width: 300px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 12px;
-            padding: 2rem;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-        
-        .step:hover {
-            background: rgba(255,255,255,0.25);
+            text-align: center;
         }
         
         .step-number {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: white;
-            color: var(--green);
+            width: 60px;
+            height: 60px;
+            background: var(--green);
+            color: white;
             border-radius: 50%;
+            font-size: 1.8rem;
             font-weight: 700;
-            font-size: 1.5rem;
             margin-bottom: 1.5rem;
+        }
+        
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
         }
         
         footer {
             background-color: var(--black);
             color: white;
-            text-align: center;
             padding: 3rem 0;
-            margin-top: 3rem;
+            text-align: center;
         }
         
         .social-links {
@@ -200,352 +236,107 @@
             transform: translateY(-3px);
         }
         
-        /* Form Styles */
-        #join {
-            padding: 4rem 0;
-            text-align: center;
-        }
-        
-        .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--black);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
-            outline: none;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: var(--green);
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Animations */
-        .animate-delay-1 {
-            animation-delay: 0.2s;
-        }
-        
-        .animate-delay-2 {
-            animation-delay: 0.4s;
-        }
-        
-        /* Responsive */
         @media (max-width: 768px) {
-            header {
-                padding: 3rem 0 5rem;
-                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-            }
-            
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .steps {
+            .navbar {
                 flex-direction: column;
-                align-items: center;
+                gap: 1rem;
             }
             
-            .step {
-                max-width: 100%;
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-header {
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
             }
         }
     </style>
 </head>
 <body>
-    <header class="animate__animated animate__fadeIn">
-        <div class="container">
-            <h1 class="animate__animated animate__fadeInDown">Comrade_Univest</h1>
-            <p class="animate__animated animate__fadeInDown animate__delay-1s">Turn your cafeteria budget into farm profits!</p>
+    <header class="hero-header">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>Comrade Univest</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="auth.html" class="btn-outline">Login</a>
+                <a href="auth.html?signup=true" class="btn-primary">Sign Up</a>
+            </div>
+        </nav>
+        
+        <div class="hero-content container">
+            <h1 class="animate__animated animate__fadeInDown">Invest Together, Grow Together</h1>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">Kenya's first student-focused investment platform</p>
+            <a href="auth.html?signup=true" class="btn-primary animate__animated animate__fadeInUp animate__delay-2s">
+                <i class="fas fa-user-plus"></i> Get Started
+            </a>
         </div>
     </header>
-    
-    <main class="container">
-        <section class="hero">
-            <h2 class="animate__animated animate__fadeIn animate__delay-1s">Group Farming Investments for Kenyan Students</h2>
-            <p class="animate__animated animate__fadeIn animate__delay-1s">Pool with classmates to fund local farms → supply your own hostels → eat what you own!</p>
-            <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students harvesting vegetables" class="hero-image animate__animated animate__fadeIn animate__delay-2s">
-            <a href="#join" class="cta-button animate__animated animate__fadeInUp animate__delay-2s">
-                <i class="fas fa-seedling"></i> Start Your Farming Squad
-            </a>
-        </section>
-        
-        <section class="features">
-            <div class="feature-card animate__animated animate__fadeIn animate__delay-1s">
-                <i class="fas fa-coins"></i>
-                <h3>KES 50 Minimum</h3>
-                <p>Invest what you'd spend on one chapati. Grow it into a week's meals.</p>
-            </div>
-            <div class="feature-card animate__animated animate__fadeIn animate__delay-2s">
-                <i class="fas fa-calendar-week"></i>
-                <h3>6-Week Cycles</h3>
-                <p>See returns faster than semester breaks. Perfect for student cashflow.</p>
-            </div>
-            <div class="feature-card animate__animated animate__fadeIn animate__delay-3s">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>M-Pesa Integrated</h3>
-                <p>Contribute and get paid via mobile money. No bank accounts needed.</p>
-            </div>
-        </section>
-        
-        <section class="how-it-works">
-            <h2 class="animate__animated animate__fadeIn">How Your Farming Squad Works</h2>
-            <div class="steps">
-                <div class="step animate__animated animate__fadeInLeft">
-                    <div class="step-number">1</div>
-                    <h3>Form Group</h3>
-                    <p>Gather 5-20 classmates via WhatsApp</p>
+
+    <main>
+        <section id="features" class="section container">
+            <h2>Why Choose Comrade Univest?</h2>
+            <div class="features-grid">
+                <div class="feature-card animate__animated animate__fadeIn">
+                    <i class="fas fa-users"></i>
+                    <h3>Group Investing</h3>
+                    <p>Pool resources with classmates to access better investment opportunities with higher returns.</p>
                 </div>
-                <div class="step animate__animated animate__fadeInLeft animate__delay-1s">
-                    <div class="step-number">2</div>
-                    <h3>Choose Crop</h3>
-                    <p>Pick from pre-vetted smallholder farms</p>
+                <div class="feature-card animate__animated animate__fadeIn animate__delay-1s">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>M-Pesa Integration</h3>
+                    <p>Seamlessly deposit and withdraw funds using Kenya's most popular mobile money platform.</p>
                 </div>
-                <div class="step animate__animated animate__fadeInLeft animate__delay-2s">
-                    <div class="step-number">3</div>
-                    <h3>Pool Funds</h3>
-                    <p>Weekly M-Pesa auto-contributions</p>
-                </div>
-                <div class="step animate__animated animate__fadeInLeft animate__delay-3s">
-                    <div class="step-number">4</div>
-                    <h3>Profit</h3>
-                    <p>Sell harvest to your own hostels!</p>
+                <div class="feature-card animate__animated animate__fadeIn animate__delay-2s">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Student-Focused</h3>
+                    <p>Investments tailored for student budgets with low minimum amounts and flexible terms.</p>
                 </div>
             </div>
         </section>
-        
-        <section id="join">
-            <h2 class="animate__animated animate__fadeIn">Ready to Harvest Profits?</h2>
-            <div class="form-container animate__animated animate__fadeInUp">
-                <form id="signup-form">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Wanjiku Mwangi" required>
+
+        <section id="how-it-works" class="section bg-light">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="steps">
+                    <div class="step animate__animated animate__fadeInLeft">
+                        <div class="step-number">1</div>
+                        <h3>Create Account</h3>
+                        <p>Sign up with your university email and verify your student status.</p>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">M-Pesa Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 254712345678" required>
+                    <div class="step animate__animated animate__fadeInLeft animate__delay-1s">
+                        <div class="step-number">2</div>
+                        <h3>Join or Create Group</h3>
+                        <p>Collaborate with classmates to pool investment funds.</p>
                     </div>
-                    <div class="form-group">
-                        <label for="campus">Your University</label>
-                        <select id="campus" name="campus" class="form-control" required>
-                            <option value="">Select Campus</option>
-                            <option value="UoN">University of Nairobi</option>
-                            <option value="KU">Kenyatta University</option>
-                            <option value="JKUAT">JKUAT</option>
-                            <option value="MOI">Moi University</option>
-                            <option value="OTHER">Other</option>
-                        </select>
+                    <div class="step animate__animated animate__fadeInLeft animate__delay-2s">
+                        <div class="step-number">3</div>
+                        <h3>Invest Together</h3>
+                        <p>Choose from vetted investment opportunities and track your growth.</p>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email (optional)</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com">
-                    </div>
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <p>Creating your account...</p>
-                    </div>
-                    <button type="submit" class="cta-button">
-                        <i class="fas fa-user-plus"></i> Join Now
-                    </button>
-                </form>
+                </div>
             </div>
         </section>
     </main>
-    
-    <footer class="animate__animated animate__fadeInUp">
+
+    <footer>
         <div class="container">
             <p>Developed by Nickson James</p>
-            <p>comrade_Univest &copy; 2025 | University Student Agri-Investment Platform</p>
+            <p>Comrade_Univest &copy; 2025 | University Student Investment Platform</p>
             <div class="social-links">
                 <a href="#"><i class="fab fa-whatsapp"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-facebook"></i></a>
             </div>
-
+            
         </div>
     </footer>
 
-    <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAwv-QnOAv992yBuyrWNexojiq2WZH75e8",
-            authDomain: "univest-183ac.firebaseapp.com",
-            projectId: "univest-183ac",
-            storageBucket: "univest-183ac.firebasestorage.app",
-            messagingSenderId: "817796904444",
-            appId: "1:817796904444:web:4514d27605107129812e79",
-            measurementId: "G-L7TJ7JFGM3"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Handle form submission
-        document.getElementById('signup-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const campus = document.getElementById('campus').value;
-            const email = document.getElementById('email').value || `${phone}@farmtohostel.com`;
-            const password = generatePassword();
-            
-            // Validate phone number
-            if (!phone.match(/^254[17]\d{8}$/)) {
-                alert('Please enter a valid Kenyan phone number starting with 254');
-                return;
-            }
-            
-            // Show loading state
-            document.getElementById('loading').style.display = 'block';
-            document.querySelector('#signup-form button[type="submit"]').disabled = true;
-            
-            try {
-                // Create user in Firebase Auth
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
-                // Store additional user data in Firestore
-                await db.collection('users').doc(user.uid).set({
-                    name,
-                    phone,
-                    campus,
-                    email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    balance: 0,
-                    investments: [],
-                    userType: 'student'
-                });
-                
-                // Add sample farms if collection is empty
-                const farmsSnapshot = await db.collection('farms').get();
-                if (farmsSnapshot.empty) {
-                    await addSampleFarms();
-                }
-                
-                // Hide loading state
-                document.getElementById('loading').style.display = 'none';
-                document.querySelector('#signup-form button[type="submit"]').disabled = false;
-                
-                // Show success message
-                alert(`Registration successful! Your temporary password is: ${password}\n\nPlease change it after login.`);
-                document.getElementById('signup-form').reset();
-                
-                // Redirect to dashboard
-                window.location.href = 'dashboard.html';
-                
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                document.querySelector('#signup-form button[type="submit"]').disabled = false;
-                console.error('Error:', error);
-                
-                if (error.code === 'auth/email-already-in-use') {
-                    alert('This phone number is already registered. Please sign in.');
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert('Registration failed: ' + error.message);
-                }
-            }
-        });
-
-        // Generate random password
-        function generatePassword() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-            let password = '';
-            for (let i = 0; i < 8; i++) {
-                password += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return password;
-        }
-
-        // Add sample farms to Firestore
-        async function addSampleFarms() {
-            const farms = [
-                {
-                    name: "Sukuma Wiki Farm",
-                    description: "High-yield kale production in Kiambu",
-                    minInvestment: 500,
-                    expectedROI: 30,
-                    duration: 6,
-                    image: "https://images.unsplash.com/photo-1594282416549-65a51c5269a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    name: "Egg Production",
-                    description: "Free-range chicken eggs in Nakuru",
-                    minInvestment: 1000,
-                    expectedROI: 45,
-                    duration: 12,
-                    image: "https://images.unsplash.com/photo-1587486913049-53fc88980bea?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    name: "Avocado Orchard",
-                    description: "Hass avocado trees in Murang'a",
-                    minInvestment: 2000,
-                    expectedROI: 80,
-                    duration: 24,
-                    image: "https://images.unsplash.com/photo-1594282486552-92ebf5f1f9e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-                }
-            ];
-            
-            for (const farm of farms) {
-                await db.collection('farms').add(farm);
-            }
-        }
-
-        // Check if user is already logged in
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in, redirect to dashboard
-                window.location.href = 'dashboard.html';
-            }
-        });
-    </script>
+    <script src="firebase.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
