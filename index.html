@@ -17,6 +17,8 @@
             --gray: #f8f9fa;
             --light-gray: #e9ecef;
             --dark-gray: #6c757d;
+            --blue: #3498db;
+            --red: #e74c3c;
         }
         
         * {
@@ -30,6 +32,7 @@
             line-height: 1.6;
             color: var(--black);
             background-color: var(--gray);
+            overflow-x: hidden;
         }
         
         .hero-header {
@@ -37,12 +40,28 @@
             color: white;
             padding: 2rem 0 6rem;
             clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
         }
         
         .container {
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         .navbar {
@@ -77,19 +96,38 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .nav-links a:hover {
             color: var(--yellow);
         }
         
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--yellow);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
         .btn {
             display: inline-block;
-            padding: 0.6rem 1.2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 50px;
             font-weight: 500;
             text-decoration: none;
             transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1rem;
         }
         
         .btn-outline {
@@ -101,17 +139,22 @@
         .btn-outline:hover {
             background: white;
             color: var(--green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .btn-primary {
             background: var(--yellow);
             color: var(--black);
             border: 2px solid var(--yellow);
+            font-weight: 600;
         }
         
         .btn-primary:hover {
             background: transparent;
             color: var(--yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .hero-content {
@@ -120,58 +163,91 @@
         }
         
         .hero-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
             font-weight: 700;
+            line-height: 1.2;
         }
         
         .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            opacity: 0.9;
         }
         
         section {
-            padding: 4rem 0;
+            padding: 5rem 0;
         }
         
         section h2 {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 3rem;
             color: var(--black);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--green);
+            border-radius: 2px;
         }
         
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
         
         .feature-card {
             background: white;
             border-radius: 12px;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
+            text-align: center;
+            border-bottom: 4px solid transparent;
         }
         
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-bottom-color: var(--green);
         }
         
         .feature-card i {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--green);
             margin-bottom: 1.5rem;
+            background: rgba(46, 204, 113, 0.1);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            text-align: center;
         }
         
         .feature-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 1rem;
+            color: var(--black);
+        }
+        
+        .feature-card p {
+            color: var(--dark-gray);
+            font-size: 1rem;
         }
         
         .bg-light {
@@ -182,72 +258,344 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2rem;
+            gap: 3rem;
         }
         
         .step {
             flex: 1;
             min-width: 250px;
-            max-width: 300px;
+            max-width: 320px;
             text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         
         .step-number {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: var(--green);
             color: white;
             border-radius: 50%;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
         }
         
         .step h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 1rem;
+            color: var(--black);
         }
         
+        .step p {
+            color: var(--dark-gray);
+            font-size: 1rem;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            background: linear-gradient(135deg, var(--black), #1a252f);
+            color: white;
+            text-align: center;
+        }
+        
+        .testimonials h2 {
+            color: white;
+        }
+        
+        .testimonials h2::after {
+            background-color: var(--yellow);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-content::before,
+        .testimonial-content::after {
+            content: '"';
+            font-size: 3rem;
+            color: rgba(255,255,255,0.2);
+            position: absolute;
+        }
+        
+        .testimonial-content::before {
+            top: -20px;
+            left: -10px;
+        }
+        
+        .testimonial-content::after {
+            bottom: -40px;
+            right: -10px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 2px solid var(--green);
+        }
+        
+        .author-info h4 {
+            margin-bottom: 0.2rem;
+            color: white;
+        }
+        
+        .author-info p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--green), var(--dark-green));
+            color: white;
+            padding: 4rem 0;
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-section p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-section .btn {
+            margin: 0 0.5rem;
+        }
+        
+        /* Footer */
         footer {
             background-color: var(--black);
             color: white;
-            padding: 3rem 0;
+            padding: 4rem 0 2rem;
             text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--yellow);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--green);
+            padding-left: 5px;
         }
         
         .social-links {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
         }
         
         .social-links a {
             color: white;
             font-size: 1.5rem;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
         }
         
         .social-links a:hover {
             color: var(--green);
             transform: translateY(-3px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .copyright {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            section h2 {
+                font-size: 2.2rem;
+            }
         }
         
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
             }
             
             .hero-content h1 {
                 font-size: 2.2rem;
+                margin-top: 2rem;
             }
             
             .hero-header {
                 clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+                padding-bottom: 4rem;
+            }
+            
+            .cta-section {
+                clip-path: polygon(0 5%, 100% 0, 100% 100%, 0% 100%);
+                padding: 3rem 0;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .cta-section .btn {
+                display: block;
+                margin: 0.5rem auto;
+                max-width: 250px;
             }
         }
     </style>
@@ -259,9 +607,13 @@
                 <i class="fas fa-handshake"></i>
                 <span>Comrade Univest</span>
             </a>
-            <div class="nav-links">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How It Works</a>
+                <a href="#testimonials">Testimonials</a>
                 <a href="auth.html" class="btn-outline">Login</a>
                 <a href="auth.html?signup=true" class="btn-primary">Sign Up</a>
             </div>
@@ -269,54 +621,118 @@
         
         <div class="hero-content container">
             <h1 class="animate__animated animate__fadeInDown">Invest Together, Grow Together</h1>
-            <p class="animate__animated animate__fadeIn animate__delay-1s">Kenya's first student-focused investment platform</p>
-            <a href="auth.html?signup=true" class="btn-primary animate__animated animate__fadeInUp animate__delay-2s">
-                <i class="fas fa-user-plus"></i> Get Started
-            </a>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">Kenya's premier student-focused investment platform that makes wealth creation accessible</p>
+            <div class="animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="auth.html?signup=true" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> Get Started - It's Free
+                </a>
+                <a href="#how-it-works" class="btn-outline" style="margin-left: 1rem;">
+                    <i class="fas fa-play-circle"></i> How It Works
+                </a>
+            </div>
         </div>
     </header>
 
     <main>
         <section id="features" class="section container">
-            <h2>Why Choose Comrade Univest?</h2>
+            <h2 class="animate__animated animate__fadeIn">Why Choose Comrade Univest?</h2>
             <div class="features-grid">
                 <div class="feature-card animate__animated animate__fadeIn">
                     <i class="fas fa-users"></i>
                     <h3>Group Investing</h3>
-                    <p>Pool resources with classmates to access better investment opportunities with higher returns.</p>
+                    <p>Pool resources with classmates to access premium investment opportunities that would otherwise be out of reach for individual students.</p>
                 </div>
                 <div class="feature-card animate__animated animate__fadeIn animate__delay-1s">
                     <i class="fas fa-mobile-alt"></i>
                     <h3>M-Pesa Integration</h3>
-                    <p>Seamlessly deposit and withdraw funds using Kenya's most popular mobile money platform.</p>
+                    <p>Seamlessly deposit and withdraw funds using Kenya's most popular mobile money platform with instant processing.</p>
                 </div>
                 <div class="feature-card animate__animated animate__fadeIn animate__delay-2s">
                     <i class="fas fa-graduation-cap"></i>
                     <h3>Student-Focused</h3>
-                    <p>Investments tailored for student budgets with low minimum amounts and flexible terms.</p>
+                    <p>Investments tailored specifically for student budgets with low minimum amounts (from KES 500) and flexible terms.</p>
                 </div>
             </div>
         </section>
 
         <section id="how-it-works" class="section bg-light">
             <div class="container">
-                <h2>How It Works</h2>
+                <h2 class="animate__animated animate__fadeIn">How It Works</h2>
                 <div class="steps">
                     <div class="step animate__animated animate__fadeInLeft">
                         <div class="step-number">1</div>
                         <h3>Create Account</h3>
-                        <p>Sign up with your university email and verify your student status.</p>
+                        <p>Sign up with your university email and verify your student status in minutes.</p>
                     </div>
                     <div class="step animate__animated animate__fadeInLeft animate__delay-1s">
                         <div class="step-number">2</div>
                         <h3>Join or Create Group</h3>
-                        <p>Collaborate with classmates to pool investment funds.</p>
+                        <p>Collaborate with classmates to pool investment funds and increase your buying power.</p>
                     </div>
                     <div class="step animate__animated animate__fadeInLeft animate__delay-2s">
                         <div class="step-number">3</div>
                         <h3>Invest Together</h3>
-                        <p>Choose from vetted investment opportunities and track your growth.</p>
+                        <p>Choose from our vetted investment opportunities and track your collective growth in real-time.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <h2 class="animate__animated animate__fadeIn">What Our Users Say</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card animate__animated animate__fadeIn">
+                        <div class="testimonial-content">
+                            Comrade Univest helped our class group invest in agriculture projects we could never afford individually. In 6 months we've seen 25% returns!
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah K.">
+                            <div class="author-info">
+                                <h4>Sarah K.</h4>
+                                <p>University of Nairobi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card animate__animated animate__fadeIn animate__delay-1s">
+                        <div class="testimonial-content">
+                            As a student with limited funds, I love that I can start investing with just KES 500. The platform is so easy to use and the educational resources are fantastic.
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="James M.">
+                            <div class="author-info">
+                                <h4>James M.</h4>
+                                <p>Kenyatta University</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card animate__animated animate__fadeIn animate__delay-2s">
+                        <div class="testimonial-content">
+                            The group investment feature is revolutionary! Our engineering class pooled funds to invest in solar projects. We're earning while learning practical applications.
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Amina W.">
+                            <div class="author-info">
+                                <h4>Amina W.</h4>
+                                <p>JKUAT</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="animate__animated animate__fadeIn">Ready to Start Your Investment Journey?</h2>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">Join thousands of Kenyan students already building their wealth through smart investing</p>
+                <div class="animate__animated animate__fadeIn animate__delay-2s">
+                    <a href="auth.html?signup=true" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Sign Up Free
+                    </a>
+                    <a href="#features" class="btn-outline">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
                 </div>
             </div>
         </section>
@@ -324,19 +740,105 @@
 
     <footer>
         <div class="container">
-            <p>Developed by Nickson James</p>
-            <p>Comrade_Univest &copy; 2025 | University Student Investment Platform</p>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Comrade Univest</h3>
+                    <p>Empowering Kenyan students to build wealth through collaborative investing and financial education.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="auth.html">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Investment Guides</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+            
             <div class="social-links">
                 <a href="https://wa.me/254114963959"><i class="fab fa-whatsapp"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
             
+            <div class="copyright">
+                <p>Developed by Nickson James</p>
+                <p>&copy; 2025 Comrade Univest. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <script src="firebase.js"></script>
-    <script src="auth.js"></script>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if(this.getAttribute('href') === '#') return;
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if(navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        });
+        
+        // Animation on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate__animated');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if(elementPosition < screenPosition) {
+                    const animationClass = element.classList[1];
+                    element.classList.add(animationClass);
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
 </body>
 </html>
