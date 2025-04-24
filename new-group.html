@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Group | Comrade Univest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --green: #2ecc71;
+            --dark-green: #27ae60;
+            --yellow: #f1c40f;
+            --orange: #e67e22;
+            --blue: #3498db;
+            --white: #ffffff;
+            --black: #2c3e50;
+            --gray: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray);
+            color: var(--black);
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+            background-color: var(--black);
+            color: white;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--green);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .page-header h1 {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            color: var(--black);
+        }
+        
+        .page-header h1 i {
+            margin-right: 10px;
+            color: var(--green);
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .input-hint {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-top: 0.25rem;
+        }
+        
+        .group-image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            background-color: var(--light-gray);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .group-image-preview i {
+            font-size: 2rem;
+            color: var(--dark-gray);
+        }
+        
+        .group-image-preview input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--dark-gray);
+            color: var(--dark-gray);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--light-gray);
+            color: var(--black);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            color: var(--red);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 0.75rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-handshake"></i>
+            <span>Comrade Univest</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="investments.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Investments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="groups.html" class="nav-link active">
+                    <i class="fas fa-users"></i>
+                    <span>My Groups</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="wallet.html" class="nav-link">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="learn.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+            </a>
+        </div>
+    </aside>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-users"></i> Create New Group</h1>
+        </div>
+        
+        <div class="form-container">
+            <form id="group-form">
+                <div class="form-group">
+                    <label>Group Image</label>
+                    <div class="group-image-preview" id="image-preview">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" id="group-image" accept="image/*">
+                    </div>
+                    <div class="input-hint">Recommended size: 500x500 pixels</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="group-name">Group Name</label>
+                        <input type="text" id="group-name" class="form-control" placeholder="e.g. Smart Investors Club" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="group-category">Category</label>
+                        <select id="group-category" class="form-control" required>
+                            <option value="">Select category</option>
+                            <option value="agriculture">Agriculture</option>
+                            <option value="real-estate">Real Estate</option>
+                            <option value="stocks">Stocks</option>
+                            <option value="savings">Savings</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="group-description">Description</label>
+                    <textarea id="group-description" class="form-control" placeholder="Describe the purpose of this group..." required></textarea>
+                    <div class="input-hint">What will members do together? What are your goals?</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="group-location">Location (Optional)</label>
+                        <input type="text" id="group-location" class="form-control" placeholder="e.g. Nairobi, Kenya">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="group-size">Maximum Members</label>
+                        <select id="group-size" class="form-control" required>
+                            <option value="10">10 members</option>
+                            <option value="20">20 members</option>
+                            <option value="30">30 members</option>
+                            <option value="50">50 members</option>
+                            <option value="100">100 members</option>
+                            <option value="0">No limit</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="group-visibility">Visibility</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="form-control" style="padding: 0.5rem; display: flex; align-items: center;">
+                                <input type="radio" id="visibility-public" name="visibility" value="public" checked style="margin-right: 10px;">
+                                <label for="visibility-public" style="margin: 0;">Public (Anyone can join)</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-control" style="padding: 0.5rem; display: flex; align-items: center;">
+                                <input type="radio" id="visibility-private" name="visibility" value="private" style="margin-right: 10px;">
+                                <label for="visibility-private" style="margin: 0;">Private (Invite only)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="group-invites">Invite Members (Optional)</label>
+                    <input type="text" id="group-invites" class="form-control" placeholder="Enter email addresses separated by commas">
+                    <div class="input-hint">Only for private groups</div>
+                </div>
+                
+                <div class="error-message" id="form-error"></div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <i class="fas fa-plus"></i> Create Group
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        // DOM Elements
+        const groupForm = document.getElementById('group-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const formError = document.getElementById('form-error');
+        const imagePreview = document.getElementById('image-preview');
+        const groupImageInput = document.getElementById('group-image');
+        
+        // Image preview handler
+        groupImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.style.backgroundImage = `url(${event.target.result})`;
+                    imagePreview.innerHTML = ''; // Remove camera icon
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+        });
+        
+        // Handle form submission
+        groupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formError.style.display = 'none';
+            
+            const user = auth.currentUser;
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Get form values
+            const groupData = {
+                name: document.getElementById('group-name').value.trim(),
+                description: document.getElementById('group-description').value.trim(),
+                category: document.getElementById('group-category').value,
+                location: document.getElementById('group-location').value.trim(),
+                maxMembers: parseInt(document.getElementById('group-size').value),
+                visibility: document.querySelector('input[name="visibility"]:checked').value,
+                createdBy: user.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                members: [user.uid],
+                admins: [user.uid],
+                activeInvestments: 0,
+                totalValue: 0,
+                avgROI: 0
+            };
+            
+            // Process invites if private group
+            const invitesInput = document.getElementById('group-invites').value.trim();
+            if (groupData.visibility === 'private' && invitesInput) {
+                groupData.pendingInvites = invitesInput.split(',').map(email => email.trim());
+            }
+            
+            // Validate form
+            if (!groupData.name || !groupData.description || !groupData.category) {
+                formError.textContent = "Please fill in all required fields";
+                formError.style.display = 'block';
+                return;
+            }
+            
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            
+            try {
+                // Upload image if selected
+                const imageFile = groupImageInput.files[0];
+                if (imageFile) {
+                    const storageRef = storage.ref(`group_images/${user.uid}/${Date.now()}_${imageFile.name}`);
+                    const uploadTask = storageRef.put(imageFile);
+                    
+                    await uploadTask;
+                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                    groupData.imageUrl = downloadURL;
+                }
+                
+                // Create group in Firestore
+                const groupRef = await db.collection('groups').add(groupData);
+                
+                // Redirect to group page
+                window.location.href = `group-details.html?id=${groupRef.id}`;
+            } catch (error) {
+                console.error("Error creating group:", error);
+                formError.textContent = error.message || "Failed to create group. Please try again.";
+                formError.style.display = 'block';
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Group';
+            }
+        });
+    </script>
+</body>
+</html>
