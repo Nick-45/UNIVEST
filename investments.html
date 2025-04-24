@@ -16,6 +16,9 @@
             --gray: #f8f9fa;
             --light-gray: #e9ecef;
             --dark-gray: #6c757d;
+            --blue: #3498db;
+            --orange: #e67e22;
+            --red: #e74c3c;
         }
         
         * {
@@ -31,9 +34,10 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             min-height: 100vh;
+            line-height: 1.6;
         }
         
-        /* Sidebar styles same as dashboard */
+        /* Sidebar styles */
         .sidebar {
             background-color: var(--black);
             color: white;
@@ -41,12 +45,64 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        /* ... (same sidebar styles as dashboard) ... */
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--green);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
         
         .main-content {
             padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         
         .investments-header {
@@ -54,12 +110,15 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
         .investments-header h1 {
             display: flex;
             align-items: center;
             font-size: 1.8rem;
+            color: var(--black);
         }
         
         .investments-header h1 i {
@@ -67,26 +126,63 @@
             color: var(--green);
         }
         
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
         .filter-bar {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
         }
         
         .filter-btn {
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             border-radius: 20px;
             background: var(--light-gray);
             border: none;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-btn i {
+            margin-right: 6px;
+            font-size: 0.8rem;
         }
         
         .filter-btn:hover, .filter-btn.active {
             background: var(--green);
             color: white;
+            transform: translateY(-1px);
         }
         
         .investments-table {
@@ -96,6 +192,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease-out;
         }
         
         .investments-table th {
@@ -104,12 +201,22 @@
             background: var(--light-gray);
             font-weight: 500;
             color: var(--dark-gray);
+            position: sticky;
+            top: 0;
         }
         
         .investments-table td {
             padding: 1rem;
             border-bottom: 1px solid var(--light-gray);
             vertical-align: middle;
+        }
+        
+        .investments-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .investments-table tr:hover td {
+            background-color: rgba(46, 204, 113, 0.05);
         }
         
         .investment-name {
@@ -127,14 +234,61 @@
             justify-content: center;
             margin-right: 1rem;
             color: var(--green);
+            flex-shrink: 0;
+        }
+        
+        .investment-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .investment-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .investment-type {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+        
+        .investment-type.group {
+            color: var(--blue);
+        }
+        
+        .amount {
+            font-weight: 500;
+        }
+        
+        .roi {
+            color: var(--green);
+            font-weight: 500;
+        }
+        
+        .duration {
+            display: flex;
+            align-items: center;
+        }
+        
+        .duration i {
+            margin-right: 6px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
         }
         
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 500;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+        }
+        
+        .status-badge i {
+            margin-right: 5px;
+            font-size: 0.7rem;
         }
         
         .status-active {
@@ -142,9 +296,24 @@
             color: var(--green);
         }
         
+        .status-pending {
+            background-color: rgba(241, 196, 15, 0.1);
+            color: var(--yellow);
+        }
+        
         .status-completed {
             background-color: rgba(108, 117, 125, 0.1);
             color: var(--dark-gray);
+        }
+        
+        .status-failed {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--red);
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
         }
         
         .action-btn {
@@ -152,12 +321,23 @@
             border: none;
             cursor: pointer;
             color: var(--dark-gray);
-            margin-left: 0.5rem;
             transition: all 0.3s ease;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .action-btn:hover {
+            background-color: rgba(46, 204, 113, 0.1);
             color: var(--green);
+        }
+        
+        .action-btn.delete:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--red);
         }
         
         .empty-state {
@@ -174,9 +354,50 @@
             margin-bottom: 1rem;
         }
         
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+        
         .empty-state p {
             color: var(--dark-gray);
             margin-bottom: 1.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(46, 204, 113, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--green);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .investments-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .action-btns {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
         }
         
         @media (max-width: 768px) {
@@ -191,18 +412,53 @@
             .investments-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+            }
+            
+            .investments-table th, 
+            .investments-table td {
+                padding: 0.75rem;
+            }
+            
+            .investment-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: 0.75rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .sidebar, .filter-bar, .action-btns, #new-investment {
+                display: none !important;
+            }
+            
+            body {
+                grid-template-columns: 1fr;
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+            
+            .main-content {
+                padding: 0.5in;
+                max-width: 100%;
             }
             
             .investments-table {
-                display: block;
-                overflow-x: auto;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .investments-table th {
+                background: #f1f1f1 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Same sidebar as dashboard -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
             <i class="fas fa-handshake"></i>
@@ -247,22 +503,42 @@
                 </a>
             </li>
         </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+            </a>
+        </div>
     </aside>
     
     <main class="main-content">
         <div class="investments-header">
             <h1><i class="fas fa-chart-pie"></i> My Investments</h1>
-            <button class="btn-primary" id="new-investment">
+            <button class="btn btn-primary" id="new-investment">
                 <i class="fas fa-plus"></i> New Investment
             </button>
         </div>
         
         <div class="filter-bar">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="active">Active</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
-            <button class="filter-btn" data-filter="group">Group</button>
-            <button class="filter-btn" data-filter="individual">Individual</button>
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-layer-group"></i> All
+            </button>
+            <button class="filter-btn" data-filter="active">
+                <i class="fas fa-bolt"></i> Active
+            </button>
+            <button class="filter-btn" data-filter="pending">
+                <i class="fas fa-clock"></i> Pending
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                <i class="fas fa-check-circle"></i> Completed
+            </button>
+            <button class="filter-btn" data-filter="group">
+                <i class="fas fa-users"></i> Group
+            </button>
+            <button class="filter-btn" data-filter="individual">
+                <i class="fas fa-user"></i> Individual
+            </button>
         </div>
         
         <div class="investments-list">
@@ -279,11 +555,11 @@
                 </thead>
                 <tbody id="investments-body">
                     <tr>
-                        <td colspan="6" class="empty-row">
+                        <td colspan="6">
                             <div class="empty-state">
                                 <i class="fas fa-spinner fa-spin"></i>
                                 <h3>Loading Investments</h3>
-                                <p>Please wait while we load your investment data</p>
+                                <p>Please wait while we load your investment portfolio</p>
                             </div>
                         </td>
                     </tr>
@@ -292,7 +568,348 @@
         </div>
     </main>
 
-    <script src="firebase.js"></script>
-    <script src="investments.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const investmentsBody = document.getElementById('investments-body');
+        const newInvestmentBtn = document.getElementById('new-investment');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        
+        // Current filter state
+        let currentFilter = 'all';
+        let investments = [];
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Load investments if logged in
+            loadInvestments(user.uid);
+        });
+        
+        // Load user's investments
+        function loadInvestments(userId) {
+            investmentsBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <h3>Loading Investments</h3>
+                            <p>Please wait while we load your investment portfolio</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            db.collection('investments')
+                .where('userId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        showEmptyState();
+                        return;
+                    }
+                    
+                    investments = [];
+                    querySnapshot.forEach(doc => {
+                        const investment = doc.data();
+                        investment.id = doc.id;
+                        investments.push(investment);
+                    });
+                    
+                    renderInvestments();
+                })
+                .catch(error => {
+                    console.error("Error loading investments:", error);
+                    showErrorState();
+                });
+        }
+        
+        // Render investments based on current filter
+        function renderInvestments() {
+            if (investments.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            let filteredInvestments = investments;
+            
+            // Apply filters
+            switch(currentFilter) {
+                case 'active':
+                    filteredInvestments = investments.filter(i => i.status === 'active');
+                    break;
+                case 'pending':
+                    filteredInvestments = investments.filter(i => i.status === 'pending');
+                    break;
+                case 'completed':
+                    filteredInvestments = investments.filter(i => i.status === 'completed');
+                    break;
+                case 'group':
+                    filteredInvestments = investments.filter(i => i.participationType === 'group');
+                    break;
+                case 'individual':
+                    filteredInvestments = investments.filter(i => i.participationType === 'individual');
+                    break;
+            }
+            
+            if (filteredInvestments.length === 0) {
+                showFilteredEmptyState();
+                return;
+            }
+            
+            // Clear table body
+            investmentsBody.innerHTML = '';
+            
+            // Add rows for each investment
+            filteredInvestments.forEach(investment => {
+                const row = document.createElement('tr');
+                
+                // Get icon based on investment type
+                let iconClass = 'fa-piggy-bank';
+                switch(investment.type) {
+                    case 'agriculture':
+                        iconClass = 'fa-seedling';
+                        break;
+                    case 'real-estate':
+                        iconClass = 'fa-home';
+                        break;
+                    case 'stocks':
+                        iconClass = 'fa-chart-line';
+                        break;
+                }
+                
+                // Status badge
+                let statusBadge = '';
+                switch(investment.status) {
+                    case 'active':
+                        statusBadge = `<span class="status-badge status-active"><i class="fas fa-bolt"></i> Active</span>`;
+                        break;
+                    case 'pending':
+                        statusBadge = `<span class="status-badge status-pending"><i class="fas fa-clock"></i> Pending</span>`;
+                        break;
+                    case 'completed':
+                        statusBadge = `<span class="status-badge status-completed"><i class="fas fa-check-circle"></i> Completed</span>`;
+                        break;
+                    case 'failed':
+                        statusBadge = `<span class="status-badge status-failed"><i class="fas fa-times-circle"></i> Failed</span>`;
+                        break;
+                }
+                
+                // Group indicator if applicable
+                const groupIndicator = investment.participationType === 'group' 
+                    ? `<span class="investment-type group"><i class="fas fa-users"></i> ${investment.groupName || 'Group'}</span>`
+                    : `<span class="investment-type"><i class="fas fa-user"></i> Individual</span>`;
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="investment-name">
+                            <div class="investment-icon">
+                                <i class="fas ${iconClass}"></i>
+                            </div>
+                            <div class="investment-details">
+                                <span class="investment-title">${investment.name}</span>
+                                ${groupIndicator}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="amount">KES ${investment.amount.toLocaleString()}</td>
+                    <td class="roi">${investment.expectedROI}%</td>
+                    <td class="duration">
+                        <i class="fas fa-calendar-alt"></i> ${investment.duration} weeks
+                    </td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn view-btn" data-id="${investment.id}" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn edit-btn" data-id="${investment.id}" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn delete" data-id="${investment.id}" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                investmentsBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const investmentId = e.currentTarget.getAttribute('data-id');
+                    viewInvestment(investmentId);
+                });
+            });
+            
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const investmentId = e.currentTarget.getAttribute('data-id');
+                    editInvestment(investmentId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const investmentId = e.currentTarget.getAttribute('data-id');
+                    deleteInvestment(investmentId);
+                });
+            });
+        }
+        
+        // Show empty state
+        function showEmptyState() {
+            investmentsBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-piggy-bank"></i>
+                            <h3>No Investments Found</h3>
+                            <p>You haven't made any investments yet. Start your investment journey today!</p>
+                            <button class="btn btn-primary" id="new-investment-empty">
+                                <i class="fas fa-plus"></i> New Investment
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('new-investment-empty').addEventListener('click', () => {
+                window.location.href = 'new-investment.html';
+            });
+        }
+        
+        // Show error state
+        function showErrorState() {
+            investmentsBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error Loading Investments</h3>
+                            <p>We couldn't load your investments. Please try again later.</p>
+                            <button class="btn btn-primary" id="retry-loading">
+                                <i class="fas fa-sync-alt"></i> Try Again
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('retry-loading').addEventListener('click', () => {
+                const user = auth.currentUser;
+                if (user) {
+                    loadInvestments(user.uid);
+                }
+            });
+        }
+        
+        // Show filtered empty state
+        function showFilteredEmptyState() {
+            investmentsBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-filter"></i>
+                            <h3>No Matching Investments</h3>
+                            <p>There are no investments that match your current filter criteria.</p>
+                            <button class="btn btn-outline" id="clear-filter">
+                                <i class="fas fa-times"></i> Clear Filter
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            document.getElementById('clear-filter').addEventListener('click', () => {
+                currentFilter = 'all';
+                updateActiveFilter();
+                renderInvestments();
+            });
+        }
+        
+        // View investment details
+        function viewInvestment(id) {
+            window.location.href = `investment-details.html?id=${id}`;
+        }
+        
+        // Edit investment
+        function editInvestment(id) {
+            window.location.href = `edit-investment.html?id=${id}`;
+        }
+        
+        // Delete investment
+        function deleteInvestment(id) {
+            if (confirm('Are you sure you want to delete this investment? This action cannot be undone.')) {
+                db.collection('investments').doc(id).delete()
+                    .then(() => {
+                        // Remove from local array
+                        investments = investments.filter(i => i.id !== id);
+                        
+                        // Re-render investments
+                        if (investments.length === 0) {
+                            showEmptyState();
+                        } else {
+                            renderInvestments();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error deleting investment:", error);
+                        alert('Failed to delete investment. Please try again.');
+                    });
+            }
+        }
+        
+        // Update active filter button
+        function updateActiveFilter() {
+            filterBtns.forEach(btn => {
+                if (btn.getAttribute('data-filter') === currentFilter) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Event listeners
+        newInvestmentBtn.addEventListener('click', () => {
+            window.location.href = 'new-investment.html';
+        });
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentFilter = btn.getAttribute('data-filter');
+                updateActiveFilter();
+                renderInvestments();
+            });
+        });
+        
+        // Initialize
+        updateActiveFilter();
+    </script>
 </body>
 </html>
