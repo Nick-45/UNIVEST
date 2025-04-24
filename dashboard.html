@@ -431,6 +431,21 @@
             margin-bottom: 1.5rem;
         }
         
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(46, 204, 113, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--green);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Responsive Styles */
         @media (max-width: 768px) {
             body {
@@ -509,7 +524,9 @@
         <div class="header">
             <h1 class="animate__animated animate__fadeIn">Dashboard</h1>
             <div class="user-profile">
-                <div class="user-avatar" id="user-avatar">JD</div>
+                <div class="user-avatar" id="user-avatar">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
                 <span id="user-name">Loading...</span>
                 <div class="user-dropdown" id="user-dropdown">
                     <a href="profile.html" class="dropdown-item">
@@ -531,9 +548,11 @@
                 <div class="stat-title">
                     <i class="fas fa-wallet"></i> Total Portfolio Value
                 </div>
-                <div class="stat-value" id="portfolio-value">KES 0</div>
-                <div class="stat-change positive" id="portfolio-change">
-                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                <div class="stat-value" id="portfolio-value">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="stat-change" id="portfolio-change">
+                    Loading...
                 </div>
             </div>
             
@@ -541,9 +560,11 @@
                 <div class="stat-title">
                     <i class="fas fa-chart-line"></i> Active Investments
                 </div>
-                <div class="stat-value" id="active-investments">0</div>
-                <div class="stat-change positive" id="investments-change">
-                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                <div class="stat-value" id="active-investments">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="stat-change" id="investments-change">
+                    Loading...
                 </div>
             </div>
             
@@ -551,9 +572,11 @@
                 <div class="stat-title">
                     <i class="fas fa-users"></i> Group Investments
                 </div>
-                <div class="stat-value" id="group-count">0</div>
-                <div class="stat-change positive" id="groups-change">
-                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                <div class="stat-value" id="group-count">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="stat-change" id="groups-change">
+                    Loading...
                 </div>
             </div>
         </div>
@@ -564,13 +587,10 @@
         </div>
         
         <div class="investments-grid" id="investments-container">
-            <div class="empty-state animate__animated animate__fadeIn">
-                <i class="fas fa-chart-pie"></i>
-                <h3>No Active Investments</h3>
-                <p>You don't have any active investments yet. Start investing today!</p>
-                <a href="investments.html" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> New Investment
-                </a>
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <h3>Loading Investments</h3>
+                <p>Please wait while we load your investment data</p>
             </div>
         </div>
     </main>
@@ -582,15 +602,14 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-    apiKey: "AIzaSyAwv-QnOAv992yBuyrWNexojiq2WZH75e8",
-    authDomain: "univest-183ac.firebaseapp.com",
-    projectId: "univest-183ac",
-    storageBucket: "univest-183ac.firebasestorage.app",
-    messagingSenderId: "817796904444",
-    appId: "1:817796904444:web:4514d27605107129812e79",
-    measurementId: "G-L7TJ7JFGM3"
-};
-        
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -638,127 +657,245 @@
             }
             
             // Load user data
-            loadUserData(user.uid);
-            loadInvestments(user.uid);
-            
-            // Set user avatar and name
-            db.collection('users').doc(user.uid).get().then(doc => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    userName.textContent = userData.name || user.email;
-                    
-                    // Set avatar initials
-                    const initials = userData.name ? 
-                        userData.name.split(' ').map(n => n[0]).join('') : 
-                        user.email[0].toUpperCase();
-                    userAvatar.textContent = initials;
-                }
-            });
+            loadUserData(user);
+            loadDashboardData(user.uid);
+            loadUserInvestments(user.uid);
         });
         
         // Load user data
-        function loadUserData(userId) {
-            // In a real app, you would fetch actual data from Firestore
-            // These are mock values for demonstration
-            
-            // Portfolio value
-            setTimeout(() => {
-                portfolioValue.textContent = 'KES 24,500';
-                portfolioChange.innerHTML = '<i class="fas fa-arrow-up"></i> 12.5% from last month';
-            }, 800);
-            
-            // Active investments
-            setTimeout(() => {
-                activeInvestments.textContent = '3';
-                investmentsChange.innerHTML = '<i class="fas fa-arrow-up"></i> 1 new this month';
-            }, 1000);
-            
-            // Group investments
-            setTimeout(() => {
-                groupCount.textContent = '2';
-                groupsChange.innerHTML = '<i class="fas fa-arrow-up"></i> 1 new group';
-            }, 1200);
+        function loadUserData(user) {
+            db.collection('users').doc(user.uid).get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    
+                    // Set user name
+                    userName.textContent = userData.name || user.email;
+                    
+                    // Set avatar initials
+                    const name = userData.name || user.email;
+                    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                    userAvatar.textContent = initials.substring(0, 2);
+                    userAvatar.style.background = `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`;
+                } else {
+                    // User document doesn't exist
+                    userName.textContent = user.email;
+                    userAvatar.textContent = user.email[0].toUpperCase();
+                }
+            }).catch(error => {
+                console.error("Error loading user data:", error);
+                userName.textContent = user.email;
+                userAvatar.textContent = user.email[0].toUpperCase();
+            });
         }
         
-        // Load investments
-        function loadInvestments(userId) {
-            // In a real app, you would fetch actual investments from Firestore
-            // This is mock data for demonstration
-            
-            setTimeout(() => {
-                const mockInvestments = [
-                    {
-                        id: '1',
-                        name: 'Solar Farm Project',
-                        type: 'group',
-                        amount: 'KES 10,000',
-                        roi: '15%',
-                        progress: 65,
-                        image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-                        endDate: '2023-12-15'
-                    },
-                    {
-                        id: '2',
-                        name: 'Student Housing',
-                        type: 'individual',
-                        amount: 'KES 7,500',
-                        roi: '22%',
-                        progress: 35,
-                        image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-                        endDate: '2024-03-20'
-                    },
-                    {
-                        id: '3',
-                        name: 'Agricultural Fund',
-                        type: 'group',
-                        amount: 'KES 7,000',
-                        roi: '18%',
-                        progress: 80,
-                        image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-                        endDate: '2023-11-30'
-                    }
-                ];
-                
-                if (mockInvestments.length > 0) {
-                    investmentsContainer.innerHTML = '';
+        // Generate random color for avatar
+        function getRandomColor() {
+            const colors = [
+                '#2ecc71', '#3498db', '#9b59b6', 
+                '#f1c40f', '#e67e22', '#e74c3c',
+                '#1abc9c', '#34495e'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Load dashboard summary data
+        function loadDashboardData(userId) {
+            // Load wallet data
+            db.collection('wallets').doc(userId).get().then(doc => {
+                if (doc.exists) {
+                    const wallet = doc.data();
+                    portfolioValue.textContent = `KES ${wallet.balance?.toLocaleString() || '0'}`;
                     
-                    mockInvestments.forEach(investment => {
-                        const investmentCard = document.createElement('div');
-                        investmentCard.className = 'investment-card animate__animated animate__fadeIn';
-                        investmentCard.innerHTML = `
-                            <div class="investment-image" style="background-image: url('${investment.image}')">
-                                <span class="investment-badge">${investment.type === 'group' ? 'Group' : 'Individual'}</span>
-                            </div>
-                            <div class="investment-details">
-                                <h3 class="investment-title">${investment.name}</h3>
-                                <div class="investment-meta">
-                                    <span>Ends: ${investment.endDate}</span>
-                                    <span>ROI: ${investment.roi}</span>
-                                </div>
-                                <div class="progress-container">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: ${investment.progress}%"></div>
-                                    </div>
-                                </div>
-                                <div class="investment-stats">
-                                    <span class="investment-amount">${investment.amount}</span>
-                                    <span class="investment-roi">${investment.roi} Return</span>
-                                </div>
-                                <div class="investment-actions">
-                                    <button class="btn btn-outline">
-                                        <i class="fas fa-chart-line"></i> View
-                                    </button>
-                                    <button class="btn btn-primary">
-                                        <i class="fas fa-plus"></i> Add Funds
-                                    </button>
-                                </div>
+                    // Calculate change (this would normally come from historical data)
+                    const changePercent = 12.5; // This should be calculated from historical data
+                    portfolioChange.innerHTML = changePercent >= 0 ?
+                        `<i class="fas fa-arrow-up"></i> ${changePercent}% from last month` :
+                        `<i class="fas fa-arrow-down"></i> ${Math.abs(changePercent)}% from last month`;
+                    portfolioChange.className = changePercent >= 0 ? 
+                        'stat-change positive' : 'stat-change negative';
+                }
+            }).catch(error => {
+                console.error("Error loading wallet:", error);
+                portfolioValue.textContent = 'KES 0';
+                portfolioChange.textContent = 'Error loading data';
+            });
+            
+            // Load investments count
+            db.collection('investments')
+                .where('userId', '==', userId)
+                .where('status', '==', 'active')
+                .get()
+                .then(querySnapshot => {
+                    activeInvestments.textContent = querySnapshot.size;
+                    investmentsChange.innerHTML = querySnapshot.size > 0 ?
+                        `<i class="fas fa-arrow-up"></i> ${querySnapshot.size} active investments` :
+                        'No active investments';
+                    investmentsChange.className = querySnapshot.size > 0 ?
+                        'stat-change positive' : 'stat-change';
+                })
+                .catch(error => {
+                    console.error("Error loading investments:", error);
+                    activeInvestments.textContent = '0';
+                    investmentsChange.textContent = 'Error loading data';
+                });
+            
+            // Load groups count
+            db.collection('groups')
+                .where('members', 'array-contains', userId)
+                .get()
+                .then(querySnapshot => {
+                    groupCount.textContent = querySnapshot.size;
+                    groupsChange.innerHTML = querySnapshot.size > 0 ?
+                        `<i class="fas fa-arrow-up"></i> ${querySnapshot.size} investment groups` :
+                        'No groups yet';
+                    groupsChange.className = querySnapshot.size > 0 ?
+                        'stat-change positive' : 'stat-change';
+                })
+                .catch(error => {
+                    console.error("Error loading groups:", error);
+                    groupCount.textContent = '0';
+                    groupsChange.textContent = 'Error loading data';
+                });
+        }
+        
+        // Load user investments
+        function loadUserInvestments(userId) {
+            investmentsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Loading Investments</h3>
+                    <p>Please wait while we load your investment data</p>
+                </div>
+            `;
+            
+            db.collection('investments')
+                .where('userId', '==', userId)
+                .where('status', 'in', ['active', 'pending'])
+                .orderBy('createdAt', 'desc')
+                .limit(6)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        investmentsContainer.innerHTML = `
+                            <div class="empty-state animate__animated animate__fadeIn">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>No Active Investments</h3>
+                                <p>You don't have any active investments yet. Start investing today!</p>
+                                <a href="investments.html" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> New Investment
+                                </a>
                             </div>
                         `;
-                        
-                        investmentsContainer.appendChild(investmentCard);
+                        return;
+                    }
+                    
+                    investmentsContainer.innerHTML = '';
+                    
+                    querySnapshot.forEach(doc => {
+                        const investment = doc.data();
+                        addInvestmentCard(investment, doc.id);
                     });
+                })
+                .catch(error => {
+                    console.error("Error loading investments:", error);
+                    investmentsContainer.innerHTML = `
+                        <div class="empty-state animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error Loading Investments</h3>
+                            <p>We couldn't load your investment data. Please try again later.</p>
+                            <button class="btn btn-primary" onclick="window.location.reload()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    `;
+                });
+        }
+        
+        // Add investment card to DOM
+        function addInvestmentCard(investment, id) {
+            const investmentCard = document.createElement('div');
+            investmentCard.className = 'investment-card animate__animated animate__fadeIn';
+            
+            // Calculate progress (assuming duration is in weeks)
+            const startDate = investment.createdAt?.toDate() || new Date();
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + (investment.duration * 7));
+            
+            const today = new Date();
+            const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+            const daysPassed = (today - startDate) / (1000 * 60 * 60 * 24);
+            let progress = Math.min(100, Math.max(0, (daysPassed / totalDays) * 100));
+            
+            // Format dates
+            const formattedEndDate = endDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            // Get appropriate icon based on investment type
+            let icon = 'fa-chart-line';
+            if (investment.type === 'agriculture') icon = 'fa-seedling';
+            if (investment.type === 'real-estate') icon = 'fa-home';
+            if (investment.type === 'stocks') icon = 'fa-chart-bar';
+            
+            investmentCard.innerHTML = `
+                <div class="investment-image" style="background-image: url('${investment.imageUrl || getDefaultImage(investment.type)}')">
+                    <span class="investment-badge" style="background-color: ${getStatusColor(investment.status)}">
+                        ${investment.status === 'pending' ? 'Pending' : 'Active'}
+                    </span>
+                </div>
+                <div class="investment-details">
+                    <h3 class="investment-title">${investment.name}</h3>
+                    <div class="investment-meta">
+                        <span><i class="far fa-calendar-alt"></i> Ends: ${formattedEndDate}</span>
+                        <span><i class="fas ${icon}"></i> ${investment.type}</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="investment-stats">
+                        <span class="investment-amount">KES ${investment.amount?.toLocaleString() || '0'}</span>
+                        <span class="investment-roi">${investment.expectedROI || '0'}% Return</span>
+                    </div>
+                    <div class="investment-actions">
+                        <a href="investment-details.html?id=${id}" class="btn btn-outline">
+                            <i class="fas fa-chart-line"></i> View
+                        </a>
+                        <a href="investments.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Funds
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            investmentsContainer.appendChild(investmentCard);
+            
+            // Animate progress bar
+            setTimeout(() => {
+                const progressFill = investmentCard.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = `${progress}%`;
                 }
-            }, 1500);
+            }, 100);
+        }
+        
+        // Get default image based on investment type
+        function getDefaultImage(type) {
+            const images = {
+                agriculture: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                'real-estate': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                stocks: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+                default: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
+            };
+            return images[type] || images.default;
+        }
+        
+        // Get status color
+        function getStatusColor(status) {
+            return status === 'pending' ? '#f1c40f' : '#2ecc71';
         }
     </script>
 </body>
