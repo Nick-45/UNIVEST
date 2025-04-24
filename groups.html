@@ -11,6 +11,8 @@
             --green: #2ecc71;
             --dark-green: #27ae60;
             --yellow: #f1c40f;
+            --orange: #e67e22;
+            --blue: #3498db;
             --white: #ffffff;
             --black: #2c3e50;
             --gray: #f8f9fa;
@@ -31,9 +33,10 @@
             display: grid;
             grid-template-columns: 250px 1fr;
             min-height: 100vh;
+            line-height: 1.6;
         }
         
-        /* Sidebar styles same as dashboard */
+        /* Sidebar styles */
         .sidebar {
             background-color: var(--black);
             color: white;
@@ -41,12 +44,64 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
-        /* ... (same sidebar styles as dashboard) ... */
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--green);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
         
         .main-content {
             padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         
         .groups-header {
@@ -54,12 +109,16 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            animation: fadeIn 0.5s ease-out;
         }
         
         .groups-header h1 {
             display: flex;
             align-items: center;
             font-size: 1.8rem;
+            color: var(--black);
         }
         
         .groups-header h1 i {
@@ -67,10 +126,45 @@
             color: var(--green);
         }
         
+        .groups-header p {
+            color: var(--dark-gray);
+            flex-basis: 100%;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
         .groups-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
+            animation: fadeIn 0.6s ease-out;
         }
         
         .group-card {
@@ -79,6 +173,9 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .group-card:hover {
@@ -87,11 +184,21 @@
         }
         
         .group-image {
-            height: 150px;
+            height: 160px;
             background-color: var(--light-gray);
             background-size: cover;
             background-position: center;
             position: relative;
+        }
+        
+        .group-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
         }
         
         .group-members {
@@ -103,10 +210,20 @@
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .group-members i {
+            margin-right: 5px;
+            font-size: 0.7rem;
         }
         
         .group-details {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .group-title {
@@ -117,64 +234,55 @@
         
         .group-description {
             color: var(--dark-gray);
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             font-size: 0.9rem;
+            flex-grow: 1;
         }
         
         .group-stats {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
         
         .group-stat {
             text-align: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background-color: var(--light-gray);
         }
         
         .group-stat-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--green);
+            margin-bottom: 0.25rem;
         }
         
         .group-stat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--dark-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .group-actions {
             display: flex;
             justify-content: space-between;
-        }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--green);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--dark-green);
+            gap: 0.75rem;
         }
         
         .btn-outline {
             background: none;
-            border: 1px solid var(--green);
-            color: var(--green);
+            border: 1px solid var(--dark-gray);
+            color: var(--dark-gray);
+            flex: 1;
         }
         
         .btn-outline:hover {
-            background-color: var(--green);
-            color: white;
+            background-color: var(--light-gray);
+            color: var(--black);
         }
         
         .empty-state {
@@ -192,9 +300,44 @@
             margin-bottom: 1rem;
         }
         
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+        
         .empty-state p {
             color: var(--dark-gray);
             margin-bottom: 1.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(46, 204, 113, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--green);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .groups-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
         }
         
         @media (max-width: 768px) {
@@ -209,13 +352,50 @@
             .groups-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+            }
+            
+            .group-card {
+                max-width: 100%;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .sidebar, #create-group {
+                display: none !important;
+            }
+            
+            body {
+                grid-template-columns: 1fr;
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+            
+            .main-content {
+                padding: 0.5in;
+                max-width: 100%;
+            }
+            
+            .groups-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5in;
+            }
+            
+            .group-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+            
+            .group-image {
+                height: 200px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Same sidebar as dashboard -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
             <i class="fas fa-handshake"></i>
@@ -260,13 +440,21 @@
                 </a>
             </li>
         </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+            </a>
+        </div>
     </aside>
     
     <main class="main-content">
         <div class="groups-header">
             <h1><i class="fas fa-users"></i> My Investment Groups</h1>
-            <button class="btn-primary" id="create-group">
-                <i class="fas fa-plus"></i> Create Group
+            <p>Collaborate with others to invest together and achieve common financial goals</p>
+            <button class="btn btn-primary" id="create-group">
+                <i class="fas fa-plus"></i> Create New Group
             </button>
         </div>
         
@@ -279,7 +467,202 @@
         </div>
     </main>
 
-    <script src="firebase.js"></script>
-    <script src="groups.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const groupsContainer = document.getElementById('groups-container');
+        const createGroupBtn = document.getElementById('create-group');
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Load groups if logged in
+            loadGroups(user.uid);
+        });
+        
+        // Load user's groups
+        function loadGroups(userId) {
+            groupsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Loading Groups</h3>
+                    <p>Please wait while we load your investment groups</p>
+                </div>
+            `;
+            
+            db.collection('groups')
+                .where('members', 'array-contains', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        showEmptyState();
+                        return;
+                    }
+                    
+                    const groups = [];
+                    querySnapshot.forEach(doc => {
+                        const group = doc.data();
+                        group.id = doc.id;
+                        groups.push(group);
+                    });
+                    
+                    renderGroups(groups);
+                })
+                .catch(error => {
+                    console.error("Error loading groups:", error);
+                    showErrorState();
+                });
+        }
+        
+        // Render groups
+        function renderGroups(groups) {
+            if (groups.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            // Clear container
+            groupsContainer.innerHTML = '';
+            
+            // Add group cards
+            groups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                // Default image if none provided
+                const imageUrl = group.imageUrl || 'https://source.unsplash.com/random/600x400/?teamwork';
+                
+                // Format member count
+                const memberCount = group.members ? group.members.length : 0;
+                
+                groupCard.innerHTML = `
+                    <div class="group-image" style="background-image: url('${imageUrl}')">
+                        <span class="group-members">
+                            <i class="fas fa-users"></i> ${memberCount} members
+                        </span>
+                    </div>
+                    <div class="group-details">
+                        <h3 class="group-title">${group.name || 'Untitled Group'}</h3>
+                        <p class="group-description">${group.description || 'No description available.'}</p>
+                        <div class="group-stats">
+                            <div class="group-stat">
+                                <div class="group-stat-value">${group.activeInvestments || 0}</div>
+                                <div class="group-stat-label">Investments</div>
+                            </div>
+                            <div class="group-stat">
+                                <div class="group-stat-value">${group.totalValue ? 'KES ' + group.totalValue.toLocaleString() : 'KES 0'}</div>
+                                <div class="group-stat-label">Total Value</div>
+                            </div>
+                            <div class="group-stat">
+                                <div class="group-stat-value">${group.avgROI ? group.avgROI + '%' : '0%'}</div>
+                                <div class="group-stat-label">Avg ROI</div>
+                            </div>
+                        </div>
+                        <div class="group-actions">
+                            <button class="btn btn-outline view-btn" data-id="${group.id}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn btn-outline manage-btn" data-id="${group.id}">
+                                <i class="fas fa-cog"></i> Manage
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                groupsContainer.appendChild(groupCard);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const groupId = e.currentTarget.getAttribute('data-id');
+                    viewGroup(groupId);
+                });
+            });
+            
+            document.querySelectorAll('.manage-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const groupId = e.currentTarget.getAttribute('data-id');
+                    manageGroup(groupId);
+                });
+            });
+        }
+        
+        // Show empty state
+        function showEmptyState() {
+            groupsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>No Groups Found</h3>
+                    <p>You haven't joined any investment groups yet. Create a new group or join an existing one to start collaborative investing.</p>
+                    <button class="btn btn-primary" id="create-group-empty">
+                        <i class="fas fa-plus"></i> Create Group
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('create-group-empty').addEventListener('click', () => {
+                window.location.href = 'create-group.html';
+            });
+        }
+        
+        // Show error state
+        function showErrorState() {
+            groupsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Loading Groups</h3>
+                    <p>We couldn't load your groups. Please try again later.</p>
+                    <button class="btn btn-primary" id="retry-loading">
+                        <i class="fas fa-sync-alt"></i> Try Again
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('retry-loading').addEventListener('click', () => {
+                const user = auth.currentUser;
+                if (user) {
+                    loadGroups(user.uid);
+                }
+            });
+        }
+        
+        // View group details
+        function viewGroup(id) {
+            window.location.href = `group-details.html?id=${id}`;
+        }
+        
+        // Manage group
+        function manageGroup(id) {
+            window.location.href = `manage-group.html?id=${id}`;
+        }
+        
+        // Event listeners
+        createGroupBtn.addEventListener('click', () => {
+            window.location.href = 'create-group.html';
+        });
+    </script>
 </body>
 </html>
